@@ -1,32 +1,42 @@
 .auth-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: calc(100vh - 200px);
-  padding: 2rem;
-  background-color: #f8f8f8;
+  padding: 6rem 2rem 2rem;
+  background-color: #f5f9f5;
+  background-image: linear-gradient(to bottom, #e8f5e9, #f5f9f5);
 }
 
 .auth-card {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(19, 170, 87, 0.15);
+  padding: 2.5rem;
   width: 100%;
   max-width: 450px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(19, 170, 87, 0.2);
+  }
 
   h2 {
     color: #13aa57;
     text-align: center;
-    margin-bottom: 0.5rem;
-    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
   }
 
   .welcome-text {
     text-align: center;
     color: #666;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.4;
   }
 
   .error-message {
@@ -65,24 +75,34 @@
 
       input {
         width: 100%;
-        padding: 0.75rem;
-        border: 1px solid #ddd;
-        border-radius: 4px;
+        padding: 0.9rem 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
         font-size: 1rem;
-        transition: border-color 0.3s;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) inset;
+        background-color: #f9f9f9;
+
+        &:hover {
+          border-color: #bdbdbd;
+        }
 
         &:focus {
           outline: none;
           border-color: #13aa57;
+          background-color: white;
+          box-shadow: 0 0 0 3px rgba(19, 170, 87, 0.1);
         }
 
         &.input-error {
           border-color: #d32f2f;
+          box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
         }
 
         &.input-success {
           border-color: #2e7d32;
-          background-color: #e8f5e9;
+          background-color: #f1f8f2;
+          box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
       }
 
@@ -123,24 +143,54 @@
 
     .submit-button {
       width: 100%;
-      padding: 0.75rem;
+      padding: 1rem;
       background-color: #13aa57;
       color: white;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(19, 170, 87, 0.2);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
 
       &:hover {
-        background-color: darken(#13aa57, 10%);
+        background-color: #0e9a4a;
+        box-shadow: 0 6px 12px rgba(19, 170, 87, 0.3);
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(19, 170, 87, 0.2);
       }
 
       &:disabled {
-        background-color: #cccccc;
+        background-color: #a0a0a0;
+        box-shadow: none;
         cursor: not-allowed;
+        transform: none;
       }
+    }
+  }
+
+  .auth-separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #666;
+    font-size: 1rem;
+    font-weight: 500;
+
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+      margin: 0 1rem;
     }
   }
 
@@ -151,18 +201,20 @@
     p {
       margin: 0.5rem 0;
       color: #666;
-      font-size: 0.9rem;
+      font-size: 1rem;
 
       a, .text-button {
         color: #13aa57;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         background: none;
         border: none;
         padding: 0;
         cursor: pointer;
+        transition: color 0.3s ease;
 
         &:hover {
+          color: #0e9a4a;
           text-decoration: underline;
         }
       }

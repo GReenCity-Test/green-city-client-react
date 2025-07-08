@@ -3,10 +3,10 @@ import { USER_API_URL } from '../../config/api';
 import { AUTH_SETTINGS } from '../../config/settings';
 
 // Base API URL from central configuration
-const API_BASE_URL = '';
-const GOOGLE_SECURITY_LINK = `/googleSecurity`;
-const GOOGLE_SECURITY_POST_LINK = `/googleSecurity`;
-const GOOGLE_SECURITY_HEADER_LINK = `/googleSecurityHeader`;
+const API_BASE_URL = USER_API_URL;
+const GOOGLE_SECURITY_LINK = `${API_BASE_URL}/googleSecurity`;
+const GOOGLE_SECURITY_POST_LINK = `${API_BASE_URL}/googleSecurity`;
+const GOOGLE_SECURITY_HEADER_LINK = `${API_BASE_URL}/googleSecurityHeader`;
 
 /**
  * Service for Google authentication

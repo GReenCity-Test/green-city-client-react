@@ -1,15 +1,35 @@
 .google-button-container {
   width: 100%;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
   display: flex;
   justify-content: center;
+  position: relative;
+  z-index: 1090; /* Higher than modal z-index and form container */
 
   .google-button {
     width: 100%;
-    height: 40px;
+    height: 36px;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  /* Ensure the iframe and div elements used by Google Sign-In are visible */
+  iframe, div[style*="position: fixed"] {
+    position: relative !important;
+    z-index: 1095 !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  /* Fix for Google button in modal */
+  div[style*="position: fixed"][style*="z-index: 9999"] {
+    position: absolute !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
   }
 
   .google-button-fallback,
@@ -46,8 +66,9 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
   color: #666;
+  font-size: 0.9rem;
 
   &::before,
   &::after {

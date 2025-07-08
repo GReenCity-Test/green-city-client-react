@@ -30,7 +30,6 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
             if (useGetAuth) {
                 userData = await signInWithGoogleGet(token, currentLanguage);
             } else if (useHeaderAuth) {
-
                 userData = await signInWithGoogleHeader(token, currentLanguage);
             } else {
                 userData = await signInWithGoogle(token, currentLanguage);
@@ -56,29 +55,36 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
         }
     };
 
-    const locale = 'en';
+    // Use the current language for the Google button
+    // Google uses 'uk' for Ukrainian, while our app uses 'ua'
+    const locale = currentLanguage === 'ua' ? 'uk' : currentLanguage;
+
+    // Add a custom style to ensure the button is visible in modal contexts
+    const buttonStyle = {
+        position: 'relative',
+        zIndex: 1095,
+        width: '100%',
+        display: 'block',
+        overflow: 'visible',
+        margin: '0 auto',
+        transform: 'scale(0.95)', // Slightly reduce the size of the button
+        maxHeight: '40px'
+    };
 
     return (
         <div className="google-button-container">
-            <button
-                className="google-button-custom"
-                onClick={() => {
-
-                    const googleButton = document.querySelector('.google-button-container iframe');
-                    if (googleButton) {
-                        googleButton.click();
-                    }
-                }}
-            >
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"/>
-                <span>{t('auth.googleSignIn', 'Sign in with Google')}</span>
-            </button>
-            <div style={{display: 'none'}}>
+            <div style={buttonStyle}>
                 <GoogleLogin
                     onSuccess={handleSuccess}
                     onError={handleError}
                     useOneTap={false}
                     locale={locale}
+                    type="standard"
+                    theme="filled_blue"
+                    text="signin_with"
+                    shape="rectangular"
+                    logo_alignment="left"
+                    width="100%"
                 />
             </div>
         </div>
