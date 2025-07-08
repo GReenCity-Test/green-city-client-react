@@ -1,0 +1,98 @@
+@import '../../../styles/variables.scss';
+
+.ubs-user-sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+
+  h3 {
+    color: $primary-green;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &.mobile-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      li {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        flex: 1 0 40%;
+      }
+    }
+
+    li {
+      margin-bottom: 15px;
+
+      a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        color: $primary-dark-grey;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover {
+          background-color: #f5f5f5;
+          color: $primary-green;
+        }
+
+        &.active {
+          background-color: $primary-green;
+          color: white;
+
+          .nav-icon {
+            filter: brightness(0) invert(1); // Make icon white when active
+          }
+        }
+
+        .nav-icon {
+          width: 20px;
+          height: 20px;
+          margin-right: 10px;
+        }
+
+        span {
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: $breakpoint-md) {
+  .ubs-user-sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .ubs-user-sidebar {
+    padding: 15px;
+
+    ul.mobile-nav {
+      li {
+        flex: 1 0 100%;
+      }
+    }
+  }
+}

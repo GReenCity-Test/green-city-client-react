@@ -1,0 +1,710 @@
+// UBS User Orders styles
+// Combined styles for UbsUserOrders, UbsUserOrdersList, UbsUserOrderDetails,
+// UbsUserOrderPaymentPopUp, and UbsUserOrderCancelPopUp components
+
+// Orders List styles
+.orders-list {
+  font-family: Lato, sans-serif;
+
+  .header_list {
+    display: grid;
+    grid-template-columns: repeat(7, 109px);
+    column-gap: 1.4vw;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    margin-left: 17px;
+    margin-top: 26px;
+
+    .header {
+      line-height: 20px;
+      font-style: normal;
+    }
+
+    .header_list-date {
+      padding-left: 0.4vw;
+    }
+
+    .header_list-paymentStatus {
+      padding-right: 0.4vw;
+    }
+
+    .header_list-paymentDate {
+      padding-left: 0.3vw;
+    }
+
+    div {
+      width: 90px;
+      flex: auto;
+    }
+
+    .empty-div {
+      width: 300px;
+    }
+  }
+
+  .accordion {
+    .expansion-panel {
+      margin: 10px 0;
+      background: var(--primary-white);
+      box-shadow: 0 2px 6px rgba(100, 114, 125, 0.15);
+
+      .expansion-panel-header {
+        height: 80px;
+        display: flex;
+        flex-direction: row-reverse;
+        padding: 0 17px;
+        cursor: pointer;
+      }
+
+      .expansion-panel-content {
+        padding: 0 0 20px 0;
+      }
+    }
+  }
+
+  .mat-content-wrapper {
+    display: grid;
+    grid-template-columns: repeat(7, 109px);
+    column-gap: 1.4vw;
+  }
+
+  .table-data {
+    color: var(--ubs-primary-black);
+  }
+
+  button {
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .btn-space {
+    display: flex;
+    width: 30%;
+  }
+
+  .btns-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 25px;
+    gap: 16px;
+  }
+
+  .mobile_list .mobile {
+    display: none;
+  }
+
+  // Responsive styles for orders list
+  @media (max-width: 1420px) {
+    .mat-content-wrapper {
+      grid-template-columns: repeat(7, 90px);
+    }
+
+    .header_list {
+      grid-template-columns: repeat(7, 90px);
+    }
+
+    .btns-group {
+      margin-left: 0;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1140px) {
+    .mobile_list {
+      height: 25px;
+    }
+
+    .expansion-panel-header {
+      height: 100px !important;
+    }
+
+    .btns-group {
+      margin: 10px 0 0 12px;
+
+      button {
+        max-width: 114px;
+      }
+    }
+  }
+
+  @media (max-width: 1140px) {
+    .header_list {
+      font-size: 12px;
+      font-weight: 500;
+
+      .btns-group {
+        flex-direction: column;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .expansion-panel-header {
+      height: fit-content !important;
+      padding: 20px 24px !important;
+    }
+
+    .header_list {
+      display: none;
+    }
+
+    .mat-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .mobile_list {
+      display: flex;
+      flex-direction: row;
+      gap: 23px;
+
+      .mobile_list-date {
+        width: 100%;
+      }
+
+      .mobile {
+        display: flex;
+        width: 100%;
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .table-data {
+        width: 100%;
+        flex: auto;
+      }
+    }
+
+    .btns-group {
+      display: flex;
+      flex-direction: row;
+      margin: 0;
+      margin-top: 20px;
+      gap: 10px;
+
+      .btn-box {
+        width: 100%;
+        margin: 0;
+
+        .s-btn {
+          max-width: none;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+// Order Details styles
+.full_card {
+  display: grid;
+  grid-template-rows: 28px auto;
+  grid-template-columns: 850px auto;
+  margin-left: 30px;
+  color: var(--ubs-primary-black);
+
+  .header_details {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: bold;
+    letter-spacing: 0.002em;
+    color: var(--ubs-primary-black);
+    font-family: var(--primary-font);
+    grid-column: 1 / -1;
+  }
+}
+
+.table_of_details {
+  width: 780px;
+  margin-top: 15px;
+  font-family: var(--primary-font);
+  grid-column: 1;
+  grid-row: 2;
+
+  .header_table {
+    height: 34px;
+    margin: 5px 0 2px;
+    border-bottom: 1px solid var(--ubs-primary-light-grey);
+
+    th {
+      text-align: left;
+    }
+
+    th:nth-child(4) {
+      text-align: center;
+    }
+
+    th:nth-child(5) {
+      text-align: right;
+    }
+  }
+
+  td {
+    padding-top: 28px;
+  }
+}
+
+.bonuses_container {
+  display: flex;
+  justify-content: end;
+  padding-right: 14px;
+
+  .refund-bonuses {
+    font-size: 14px;
+    text-align: end;
+    max-width: 270px;
+  }
+}
+
+.data_table {
+  color: var(--ubs-primary-black);
+
+  td {
+    text-align: left;
+  }
+}
+
+.sum_of_order {
+  border-top: 1px solid var(--ubs-primary-light-grey);
+
+  td {
+    padding-top: 16px;
+    text-align: right;
+  }
+}
+
+.sum_to_pay {
+  td {
+    padding-top: 8px;
+    padding-bottom: 16px;
+    text-align: right;
+  }
+}
+
+.optional_row {
+  td {
+    padding-top: 8px;
+    text-align: right;
+  }
+}
+
+.additional_info:last-child {
+  td {
+    padding-bottom: 16px;
+  }
+}
+
+.data_table td:nth-child(4) {
+  padding-left: 45px;
+}
+
+.data_table td:nth-child(5) {
+  text-align: right;
+  color: var(--ubs-primary-black);
+  font-weight: bold;
+}
+
+.sum_of_order td:nth-child(2) {
+  color: var(--ubs-primary-black);
+  font-weight: bold;
+}
+
+.sum_to_pay td:nth-child(2) {
+  color: var(--ubs-primary-black);
+  font-weight: bold;
+}
+
+.additional_orders_bold_text {
+  span {
+    font-weight: 500;
+  }
+}
+
+.optional_row td:nth-child(2) {
+  color: var(--ubs-primary-light-green);
+  line-height: 12px;
+}
+
+.order_details {
+  width: 200px;
+  padding: 0;
+  margin-left: 16px;
+  color: var(--ubs-primary-black);
+  font-family: var(--primary-font);
+  grid-column: 2;
+  grid-row: 2;
+  border-left: 1px solid var(--ubs-primary-light-grey);
+
+  .recipient {
+    margin: 22px 0;
+    padding: 0 0 0 15px;
+  }
+
+  .bold_text {
+    font-weight: bold;
+  }
+
+  ol {
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+}
+
+// Responsive styles for order details
+@media (max-width: 1420px) {
+  .full_card {
+    margin-left: 0;
+    grid-template-columns: 716px auto;
+  }
+
+  .table_of_details {
+    width: 700px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .full_card {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: var(--ubs-primary-black);
+
+    .header_details {
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: bold;
+      letter-spacing: 0.002em;
+      color: var(--ubs-primary-black);
+      font-family: var(--primary-font);
+    }
+  }
+
+  .table_of_details {
+    width: 100%;
+  }
+
+  .order_details {
+    border-left: none;
+    margin-left: 0;
+
+    .recipient {
+      padding: 0;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .table_of_details {
+    td {
+      font-size: 11px;
+      padding-top: 14px;
+      line-height: 1.5;
+    }
+
+    .header_table {
+      th {
+        font-size: 11px;
+      }
+    }
+  }
+
+  .header_details {
+    padding-top: 100px;
+  }
+
+  .order_details {
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+  }
+
+  .bold_text,
+  .recipient {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .order_details {
+    margin: 0;
+    color: var(--ubs-primary-black);
+    font-family: var(--primary-font);
+
+    .recipient {
+      margin: 32px 0;
+    }
+
+    .bold_text {
+      font-weight: bold;
+    }
+
+    ol {
+      margin-bottom: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+  }
+}
+
+// Global button styles
+.ubs-primary-global-button {
+  background-color: var(--ubs-button-light-green);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 700;
+
+  &:hover {
+    background-color: var(--ubs-button-dark-green);
+  }
+}
+
+.ubs-secondary-global-button {
+  background-color: white;
+  color: var(--ubs-button-light-green);
+  border: 1px solid var(--ubs-button-light-green);
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 700;
+
+  &:hover {
+    background-color: var(--ubs-button-light-green);
+    color: white;
+  }
+}
+
+.s-btn {
+  min-width: 100px;
+}
+
+// Main container styles
+.wrapper {
+  padding: 20px;
+
+  .main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .main-header-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ubs-primary-black);
+    }
+  }
+
+  .loading-spinner, .if-empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    color: var(--ubs-primary-black);
+  }
+
+  .error-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+
+    p {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: var(--ubs-button-light-green);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+    }
+  }
+
+  .cards {
+    max-height: 600px;
+    overflow-y: auto;
+
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--ubs-primary-light-grey);
+
+      .tab {
+        padding: 10px 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: #979797;
+
+        &.active {
+          color: var(--ubs-button-light-green);
+          border-bottom: 2px solid var(--ubs-button-light-green);
+        }
+      }
+    }
+
+    .mobile-title {
+      display: none;
+
+      @media (max-width: 768px) {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+
+        img {
+          margin-right: 10px;
+        }
+      }
+    }
+
+    .loading-more {
+      text-align: center;
+      padding: 10px;
+      color: var(--ubs-primary-black);
+    }
+  }
+}
+
+// Text danger class
+.text-danger {
+  color: red;
+}
+
+// Modal styles for payment and cancel popups
+.payment-modal, .cancel-modal {
+  .modal-content {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-header {
+    border-bottom: 1px solid var(--ubs-primary-light-grey);
+    padding: 16px 24px;
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ubs-primary-black);
+    }
+
+    .close {
+      font-size: 24px;
+      color: var(--ubs-primary-black);
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+  .modal-body {
+    padding: 24px;
+
+    .payment-details, .cancel-details {
+      .payment-row, .order-info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 16px;
+
+        .payment-value, .order-info-value {
+          font-weight: 700;
+        }
+      }
+
+      .total {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--ubs-primary-light-grey);
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .cancel-warning {
+        color: #d9534f;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .order-info {
+        background-color: #f8f9fa;
+        padding: 16px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+
+      .payment-error, .cancel-error {
+        color: #d9534f;
+        margin-top: 16px;
+        padding: 8px;
+        background-color: #f8d7da;
+        border-radius: 4px;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .form-control {
+        border-radius: 4px;
+        border: 1px solid var(--ubs-primary-light-grey);
+        padding: 8px 12px;
+
+        &:focus {
+          border-color: var(--ubs-button-light-green);
+          box-shadow: 0 0 0 0.2rem rgba(0, 171, 107, 0.25);
+        }
+      }
+
+      .text-muted {
+        font-size: 14px;
+        margin-top: 4px;
+      }
+    }
+  }
+
+  .modal-footer {
+    border-top: 1px solid var(--ubs-primary-light-grey);
+    padding: 16px 24px;
+
+    .btn {
+      padding: 8px 16px;
+      font-weight: 700;
+      border-radius: 4px;
+    }
+  }
+}
+
+// Danger button style
+.ubs-danger-button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #c9302c;
+  }
+
+  &:disabled {
+    background-color: #e7908d;
+  }
+}

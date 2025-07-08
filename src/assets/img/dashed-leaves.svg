@@ -1,0 +1,74 @@
+<svg width="1440" height="2926" viewBox="0 0 1440 2926" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g opacity="0.5">
+    <!-- Dashed line pattern -->
+    <path d="M100,100 Q200,50 300,100 T500,100" stroke="#13aa57" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+    <!-- Leaf 1 -->
+    <path d="M150,150 C200,100 250,100 300,150 C250,200 200,200 150,150 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 2 -->
+    <path d="M350,250 C400,200 450,200 500,250 C450,300 400,300 350,250 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 3 -->
+    <path d="M200,350 C250,300 300,300 350,350 C300,400 250,400 200,350 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 4 -->
+    <path d="M450,450 C500,400 550,400 600,450 C550,500 500,500 450,450 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 5 -->
+    <path d="M250,550 C300,500 350,500 400,550 C350,600 300,600 250,550 Z" fill="#b3e6c9"/>
+
+    <!-- Dashed line pattern 2 -->
+    <path d="M600,600 Q700,550 800,600 T1000,600" stroke="#13aa57" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+    <!-- Leaf 6 -->
+    <path d="M650,650 C700,600 750,600 800,650 C750,700 700,700 650,650 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 7 -->
+    <path d="M850,750 C900,700 950,700 1000,750 C950,800 900,800 850,750 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 8 -->
+    <path d="M700,850 C750,800 800,800 850,850 C800,900 750,900 700,850 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 9 -->
+    <path d="M950,950 C1000,900 1050,900 1100,950 C1050,1000 1000,1000 950,950 Z" fill="#b3e6c9"/>
+
+    <!-- Leaf 10 -->
+    <path d="M750,1050 C800,1000 850,1000 900,1050 C850,1100 800,1100 750,1050 Z" fill="#b3e6c9"/>
+
+    <!-- Repeat pattern for more height -->
+    <g transform="translate(0, 1000)">
+      <!-- Dashed line pattern -->
+      <path d="M100,100 Q200,50 300,100 T500,100" stroke="#13aa57" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+      <!-- Leaf 1 -->
+      <path d="M150,150 C200,100 250,100 300,150 C250,200 200,200 150,150 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 2 -->
+      <path d="M350,250 C400,200 450,200 500,250 C450,300 400,300 350,250 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 3 -->
+      <path d="M200,350 C250,300 300,300 350,350 C300,400 250,400 200,350 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 4 -->
+      <path d="M450,450 C500,400 550,400 600,450 C550,500 500,500 450,450 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 5 -->
+      <path d="M250,550 C300,500 350,500 400,550 C350,600 300,600 250,550 Z" fill="#b3e6c9"/>
+    </g>
+
+    <g transform="translate(0, 2000)">
+      <!-- Dashed line pattern -->
+      <path d="M100,100 Q200,50 300,100 T500,100" stroke="#13aa57" stroke-width="2" stroke-dasharray="5,5" fill="none"/>
+
+      <!-- Leaf 1 -->
+      <path d="M150,150 C200,100 250,100 300,150 C250,200 200,200 150,150 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 2 -->
+      <path d="M350,250 C400,200 450,200 500,250 C450,300 400,300 350,250 Z" fill="#b3e6c9"/>
+
+      <!-- Leaf 3 -->
+      <path d="M200,350 C250,300 300,300 350,350 C300,400 250,400 200,350 Z" fill="#b3e6c9"/>
+    </g>
+  </g>
+</svg>

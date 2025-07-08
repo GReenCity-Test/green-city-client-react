@@ -1,0 +1,79 @@
+// Import responsive mixins
+@import '../../styles/responsive.scss';
+
+.events-page {
+  padding: 2rem 0;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .events-page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #13aa57; // var(--primary-green)
+    margin-bottom: 2rem;
+    text-align: center;
+
+    @media (min-width: 768px) {
+      font-size: 2.5rem;
+      text-align: left;
+    }
+  }
+
+  .events-tabs {
+    display: flex;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e6e6e6; // var(--quaternary-light-grey)
+
+    .tab-button {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #666; // var(--tertiary-grey)
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+
+      &:hover {
+        color: #13aa57; // var(--primary-green)
+      }
+
+      &.active {
+        color: #13aa57; // var(--primary-green)
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background-color: #13aa57; // var(--primary-green)
+        }
+      }
+    }
+  }
+
+  .events-content {
+    min-height: 400px;
+  }
+}
+
+// Responsive styles
+@media (min-width: 992px) {
+  .events-page {
+    padding: 3rem 0;
+
+    .events-tabs {
+      .tab-button {
+        font-size: 1.1rem;
+        padding: 1rem 2rem;
+      }
+    }
+  }
+}

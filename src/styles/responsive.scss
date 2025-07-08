@@ -1,0 +1,69 @@
+// Responsive breakpoints
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  2xl: 1400px
+);
+
+// Media query for min-width (mobile first approach)
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Shorthand for mobile-first responsive design
+@mixin responsiveMobileFirst($breakpoint) {
+  @include respond-to($breakpoint) {
+    @content;
+  }
+}
+
+// Media query for max-width (desktop first approach)
+@mixin respond-down($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$breakpoint}. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Shorthand for desktop-first responsive design
+@mixin responsiveDesktopFirst($breakpoint) {
+  @include respond-down($breakpoint) {
+    @content;
+  }
+}
+
+// Media query for a specific range
+@mixin respond-between($min, $max) {
+  @if map-has-key($breakpoints, $min) and map-has-key($breakpoints, $max) {
+    @media (min-width: map-get($breakpoints, $min)) and (max-width: map-get($breakpoints, $max)) {
+      @content;
+    }
+  } @else {
+    @warn "Unknown breakpoint: #{$min} or #{$max}. Available breakpoints are: #{map-keys($breakpoints)}";
+  }
+}
+
+// Example usage:
+// .element {
+//   width: 100%;
+//
+//   @include responsiveMobileFirst(md) {
+//     width: 50%;
+//   }
+//
+//   @include responsiveMobileFirst(lg) {
+//     width: 33.33%;
+//   }
+// }

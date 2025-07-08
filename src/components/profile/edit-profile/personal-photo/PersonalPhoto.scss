@@ -1,0 +1,129 @@
+.personal-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+
+  .photo-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover .hover-overlay {
+      opacity: 1;
+    }
+
+    &.loading {
+      cursor: not-allowed;
+
+      .hover-overlay {
+        opacity: 0;
+      }
+    }
+
+    .profile-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .default-avatar {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #13aa57;
+      color: white;
+      font-size: 60px;
+      font-weight: bold;
+    }
+
+    .hover-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+
+      span {
+        color: white;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        padding: 0 10px;
+      }
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(19, 170, 87, 0.3);
+        border-radius: 50%;
+        border-top-color: #13aa57;
+        animation: spin 1s linear infinite;
+      }
+    }
+  }
+
+  .file-input {
+    display: none;
+  }
+
+  .remove-photo-btn {
+    margin-top: 15px;
+    background-color: transparent;
+    border: none;
+    color: #d32f2f;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+
+    &:hover {
+      color: darken(#d32f2f, 10%);
+    }
+
+    &:disabled {
+      color: #ccc;
+      cursor: not-allowed;
+      text-decoration: none;
+    }
+  }
+
+  .error-message {
+    margin-top: 10px;
+    color: #d32f2f;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

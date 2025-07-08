@@ -1,0 +1,421 @@
+.profile-page {
+  padding: 2rem 0;
+  background-color: #f8f8f8;
+  min-height: calc(100vh - 200px);
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .loading-spinner, .error-message {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .loading-spinner p {
+    color: #666;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .error-message {
+    p {
+      color: #d32f2f;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .retry-button {
+      padding: 0.75rem 2rem;
+      background-color: #13aa57;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken(#13aa57, 10%);
+      }
+    }
+  }
+
+  .profile-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .profile-progress {
+      width: 100%;
+      margin-top: 1.5rem;
+
+      .progress-bar {
+        width: 100%;
+        height: 10px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+
+        .progress-fill {
+          height: 100%;
+          background-color: #13aa57;
+          border-radius: 5px;
+          transition: width 0.3s ease;
+        }
+      }
+
+      .progress-text {
+        text-align: right;
+        color: #13aa57;
+        font-size: 0.9rem;
+        font-weight: bold;
+        margin: 0;
+      }
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-right: 2rem;
+      border: 3px solid #13aa57;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .profile-info {
+      flex: 1;
+
+      h1 {
+        margin: 0 0 0.5rem;
+        color: #333;
+        font-size: 2rem;
+      }
+
+      .profile-email {
+        color: #666;
+        margin: 0 0 1rem;
+        font-size: 1.1rem;
+      }
+
+      .edit-profile-button {
+        padding: 0.5rem 1rem;
+        background-color: transparent;
+        border: 1px solid #13aa57;
+        color: #13aa57;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+
+        &:hover {
+          background-color: #13aa57;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .profile-content {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+
+    .left-column, .right-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .center-column {
+      flex: 2;
+    }
+
+    .section-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      h2 {
+        margin: 0 0 1.5rem;
+        color: #333;
+        font-size: 1.5rem;
+      }
+
+      .placeholder-text {
+        color: #888;
+        font-style: italic;
+        text-align: center;
+        padding: 1.5rem 0;
+      }
+    }
+  }
+
+  .habits-section {
+    flex: 2;
+    min-width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+
+      h2 {
+        margin: 0;
+        color: #333;
+        font-size: 1.5rem;
+      }
+
+      .add-habit-button {
+        padding: 0.5rem 1rem;
+        background-color: #13aa57;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: darken(#13aa57, 10%);
+        }
+      }
+    }
+
+    .habits-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .habit-card {
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      h3 {
+        margin: 0 0 0.5rem;
+        color: #13aa57;
+        font-size: 1.2rem;
+      }
+
+      p {
+        color: #666;
+        margin: 0 0 1rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .habit-stats {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-size: 0.8rem;
+        color: #888;
+      }
+
+      .habit-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+
+        button {
+          flex: 1;
+          padding: 0.5rem;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s, color 0.3s;
+
+          &:first-child {
+            background-color: #f5f5f5;
+            color: #333;
+
+            &:hover {
+              background-color: #e0e0e0;
+            }
+          }
+
+          &:last-child {
+            background-color: #ffebee;
+            color: #d32f2f;
+
+            &:hover {
+              background-color: #ffcdd2;
+            }
+          }
+        }
+      }
+    }
+
+    .no-habits {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 2rem 0;
+    }
+  }
+
+  .statistics-section {
+    flex: 1;
+    min-width: 250px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    align-self: flex-start;
+
+    h2 {
+      margin: 0 0 1.5rem;
+      color: #333;
+      font-size: 1.5rem;
+    }
+
+    .statistics-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .statistic-item {
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+
+      h3 {
+        margin: 0 0 0.5rem;
+        color: #666;
+        font-size: 1rem;
+        font-weight: normal;
+      }
+
+      .statistic-value {
+        margin: 0;
+        color: #13aa57;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    }
+
+    .no-statistics {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+      padding: 2rem 0;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .profile-page {
+    .profile-content {
+      flex-direction: column;
+
+      .left-column, .center-column, .right-column {
+        width: 100%;
+      }
+
+      .left-column {
+        order: 3;
+      }
+
+      .center-column {
+        order: 1;
+      }
+
+      .right-column {
+        order: 2;
+      }
+    }
+
+    .statistics-section {
+      width: 100%;
+
+      .statistics-content {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .statistic-item {
+          flex: 1;
+          min-width: 150px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 1rem 0;
+
+    .profile-header {
+      flex-direction: column;
+      text-align: center;
+
+      .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    .habits-section {
+      .section-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .habits-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .statistics-section {
+      .statistics-content {
+        flex-direction: column;
+      }
+    }
+  }
+}

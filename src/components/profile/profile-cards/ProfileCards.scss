@@ -1,0 +1,82 @@
+@import '../../../styles/variables.scss';
+
+.right-cards {
+  .card {
+    width: 100%;
+    color: white;
+    text-align: left;
+    padding: 16px;
+    margin: 20px 0;
+    border-radius: 4px;
+    background: $primary-green;
+    box-shadow: 1px 4px 8px $quintynary-dark-grey;
+    position: relative;
+    overflow: hidden;
+
+    .cart-title {
+      font-family: var(--tertiary-font);
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-description {
+      font-size: 11px;
+      line-height: 16px;
+      font-family: var(--quaternary-font);
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .shape-img {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+
+      img {
+        width: 100%;
+        height: 55px;
+        user-select: none;
+      }
+    }
+  }
+
+  .habit-card {
+    background: #ccb7fa;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .right-cards {
+    .card {
+      margin: 15px 0;
+
+      .cart-title {
+        font-size: 13px;
+      }
+
+      .card-description {
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .right-cards {
+    .card {
+      margin: 10px 0;
+      padding: 12px;
+
+      .shape-img img {
+        height: 45px;
+      }
+    }
+  }
+}

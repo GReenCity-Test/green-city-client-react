@@ -1,0 +1,182 @@
+// Import responsive mixins
+@import '../../../styles/responsive.scss';
+
+.absence-events {
+  .absence-info {
+    display: flex;
+    background-color: #fff9d2; // var(--quaternary-light-green)
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #ffc000; // var(--attention-yellow)
+
+    .absence-info-icon {
+      flex-shrink: 0;
+      margin-right: 1rem;
+      color: #ffc000; // var(--attention-yellow)
+      font-size: 1.5rem;
+    }
+
+    .absence-info-text {
+      p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: #666; // var(--tertiary-grey)
+      }
+    }
+  }
+
+  .absence-events-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .absence-event-card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      background-color: white;
+      border: 1px solid #e6e6e6; // var(--quaternary-light-grey)
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .absence-event-image {
+        height: 180px;
+        overflow: hidden;
+        position: relative;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+          filter: grayscale(30%);
+        }
+
+        .absence-badge {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background-color: #eb180d; // var(--error-red)
+          color: white;
+          padding: 0.25rem 0.75rem;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          font-weight: 600;
+        }
+      }
+
+      &:hover .absence-event-image img {
+        transform: scale(1.05);
+      }
+
+      .absence-event-info {
+        padding: 1rem;
+
+        .absence-event-title {
+          font-size: 1.2rem;
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+          color: #313131; // var(--secondary-dark-grey)
+        }
+
+        .absence-event-date, .absence-event-location {
+          font-size: 0.9rem;
+          color: #666; // var(--tertiary-grey)
+          margin-bottom: 0.25rem;
+        }
+
+        .absence-reason {
+          margin-top: 0.75rem;
+          padding-top: 0.75rem;
+          border-top: 1px solid #e6e6e6; // var(--quaternary-light-grey)
+
+          .absence-reason-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #313131; // var(--secondary-dark-grey)
+            margin-right: 0.5rem;
+          }
+
+          .absence-reason-text {
+            font-size: 0.9rem;
+            color: #666; // var(--tertiary-grey)
+          }
+        }
+      }
+    }
+  }
+
+  .no-absence-events {
+    text-align: center;
+    padding: 3rem 2rem;
+    background-color: #f5f7f6; // var(--primary-light-grey)
+    border-radius: 8px;
+
+    h3 {
+      font-size: 1.5rem;
+      color: #13aa57; // var(--primary-green)
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #666; // var(--tertiary-grey)
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+
+    .pagination-button {
+      padding: 0.5rem 1rem;
+      background-color: #f5f7f6; // var(--primary-light-grey)
+      border: 1px solid #e6e6e6; // var(--quaternary-light-grey)
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #666; // var(--tertiary-grey)
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #e6e6e6; // var(--quaternary-light-grey)
+      }
+
+      &.active {
+        background-color: #13aa57; // var(--primary-green)
+        color: white;
+        border-color: #13aa57; // var(--primary-green)
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .events-loading, .events-error {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f5f7f6; // var(--primary-light-grey)
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+
+  .events-error {
+    color: #eb180d; // var(--error-red)
+  }
+}

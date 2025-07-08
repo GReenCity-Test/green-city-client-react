@@ -1,0 +1,237 @@
+// Main styles for the about page
+.about-page {
+  color: #444e55; // var(--quaternary-dark-grey)
+  overflow-x: hidden;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  h1 {
+    color: #13aa57; // var(--primary-green)
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  .intro {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #555;
+    font-family: 'Open Sans', sans-serif;
+  }
+}
+
+// Section styles
+.section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+
+  &__header {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.25;
+    color: #13aa57; // var(--primary-green)
+    margin-bottom: 1rem;
+  }
+
+  &__description {
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 32px;
+    color: #444e55; // var(--quaternary-dark-grey)
+  }
+
+  &__button {
+    font-family: 'Open Sans', sans-serif;
+    padding: 16px 40px;
+    background-color: #13aa57; // var(--primary-green)
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    align-self: flex-start;
+
+    &:hover {
+      background-color: #056b33; // var(--secondary-dark-green)
+    }
+  }
+}
+
+// About section specific styles
+.about-section {
+  margin-bottom: 40px;
+
+  .section__content {
+    padding-inline: 18px;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Vision section specific styles
+.vision-section {
+  gap: 24px;
+  margin-bottom: 40px;
+
+  img {
+    order: 1;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+// Vision gallery styles
+.vision-gallery {
+  position: relative;
+  margin-top: 60px;
+  margin-bottom: 60px;
+
+  &__header {
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.25;
+    color: #13aa57; // var(--primary-green)
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  &__decorative-bcg {
+    display: none;
+  }
+}
+
+// Grey text helper
+.grey-text {
+  color: #444e55; // var(--quaternary-dark-grey)
+}
+
+// Primary button global style
+.primary-global-button {
+  background-color: #13aa57; // var(--primary-green)
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #056b33; // var(--secondary-dark-green)
+  }
+}
+
+// Media queries for responsive design
+@media (min-width: 768px) {
+  .about-page {
+    h1 {
+      font-size: 3rem;
+    }
+
+    .intro {
+      font-size: 1.3rem;
+    }
+  }
+
+  .section {
+    &__header {
+      font-size: 36px;
+    }
+
+    &__description {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .vision-section .section {
+    gap: 118px;
+    flex-direction: row;
+
+    &__content {
+      order: 2;
+      flex: 1;
+    }
+
+    img {
+      flex: 1;
+    }
+  }
+
+  .about-section.section {
+    flex-direction: row;
+
+    .section__content {
+      flex: 1;
+    }
+
+    img {
+      flex: 1;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  #main-content {
+    padding: 64px 0;
+  }
+
+  .section {
+    &__header {
+      font-size: 48px;
+    }
+
+    &__description {
+      font-size: 24px;
+    }
+  }
+
+  .about-section .section {
+    &__content {
+      padding-left: 100px;
+    }
+  }
+
+  .vision-section {
+    margin-bottom: 100px;
+  }
+
+  .vision-gallery {
+    margin-top: 100px;
+    margin-bottom: 100px;
+
+    &__header {
+      font-size: 48px;
+    }
+
+    &__decorative-bcg {
+      display: block;
+      width: 100%;
+      position: absolute;
+      background: url('/assets/img/dashed-leaves.svg') no-repeat;
+      height: 2926px;
+      margin: auto;
+      z-index: 0;
+      background-position-x: 100px;
+      background-position-y: 240px;
+    }
+  }
+}

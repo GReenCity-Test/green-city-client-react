@@ -1,0 +1,76 @@
+.eco-event-item {
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &.main-event-item {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    border-radius: 0;
+    box-shadow: none;
+
+    &:hover {
+      transform: none;
+    }
+
+    .event-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  .event-content {
+    padding: 1rem;
+
+    .event-title {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+
+      a {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s;
+
+        &:hover {
+          color: #13aa57;
+        }
+      }
+    }
+
+    .event-description {
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .event-info {
+      display: flex;
+      justify-content: space-between;
+      color: #888;
+      font-size: 0.9rem;
+
+      .event-author {
+        font-weight: bold;
+      }
+
+      .event-date {
+        font-style: italic;
+      }
+    }
+  }
+}
