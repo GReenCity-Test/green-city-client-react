@@ -11,6 +11,7 @@ import AboutPage from './components/about/AboutPage';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import NewsPage from './components/news/NewsPage';
+import CreateNews from './components/news/CreateNews';
 import MapPage from './components/map/MapPage';
 import ProfilePage from './components/profile/ProfilePage';
 import EventsPage from './components/events/EventsPage';
@@ -35,6 +36,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/news" element={<NewsPage />} />
+              <Route path="/news/create-news" element={<CreateNews />} />
               <Route path="/events/*" element={<EventsPage />} />
               <Route path="/map" element={<MapPage />} />
               <Route path="/about" element={<AboutPage />} />

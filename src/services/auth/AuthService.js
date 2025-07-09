@@ -165,14 +165,24 @@ class AuthService {
       // Create a new axios instance without interceptors
       const axiosInstance = axios.create();
 
+      // Get the access token
+      const accessToken = this.getAccessToken();
+
+      // Log for debugging
+      console.log('Getting current user with token:', accessToken ? 'Token exists' : 'No token');
+
       const response = await axiosInstance.get(`/user/me`, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': accessToken ? `Bearer ${accessToken}` : ''
         },
         // Disable sending cookies to further reduce request size
         withCredentials: false
       });
+
+      // Log the response data structure for debugging
+      console.log('Current user response data:', response.data);
 
       return response.data;
     } catch (error) {

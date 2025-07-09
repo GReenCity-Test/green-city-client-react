@@ -5,12 +5,13 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    justify-content: flex-start;
   }
 
   .tag-button {
     padding: 0.5rem 1rem;
     background-color: #f5f7f6; // var(--primary-light-grey)
-    border: 1px solid #e6e6e6; // var(--quaternary-light-grey)
+    border: none;
     border-radius: 20px;
     font-size: 0.9rem;
     color: #666; // var(--tertiary-grey)
@@ -24,7 +25,6 @@
     &.active {
       background-color: #13aa57; // var(--primary-green)
       color: white;
-      border-color: #13aa57; // var(--primary-green)
     }
   }
 }
