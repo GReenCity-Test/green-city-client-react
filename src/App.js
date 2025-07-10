@@ -11,7 +11,7 @@ import AboutPage from './components/about/AboutPage';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import NewsPage from './components/news/NewsPage';
-import CreateNews from './components/news/CreateNews';
+import CreateNews from './components/news/create-news';
 import MapPage from './components/map/MapPage';
 import ProfilePage from './components/profile/ProfilePage';
 import EventsPage from './components/events/EventsPage';

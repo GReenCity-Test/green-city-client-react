@@ -2,6 +2,7 @@ import React from 'react';
 import {GoogleLogin} from '@react-oauth/google';
 import {useAuth} from '../../../contexts/AuthContext';
 import {useTranslation} from '../../../services/translation/TranslationService';
+import {googleButtonPropTypes, googleButtonDefaultProps} from './GoogleButton.propTypes';
 import './GoogleButton.scss';
 
 /**
@@ -15,16 +16,14 @@ import './GoogleButton.scss';
  * @param {boolean} props.useGetAuth - Whether to use GET-based authentication (default: false)
  * @returns {JSX.Element} - Rendered component
  */
-const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = false, useGetAuth = false}) => {
+const GoogleButton = ({onSuccess, onError, isManager, useHeaderAuth, useGetAuth}) => {
     const {signInWithGoogle, signInWithGoogleHeader, signInWithGoogleGet} = useAuth();
-    const {currentLanguage, t} = useTranslation();
+    const {currentLanguage} = useTranslation();
 
     const handleSuccess = async (credentialResponse) => {
         try {
             console.log('Google Sign-In successful:', credentialResponse);
-
             const token = credentialResponse.credential;
-
             let userData;
 
             if (useGetAuth) {
@@ -40,7 +39,6 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
             }
         } catch (error) {
             console.error('Error processing Google sign-in:', error);
-
             if (onError && typeof onError === 'function') {
                 onError(error);
             }
@@ -49,17 +47,13 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
 
     const handleError = (error) => {
         console.error('Google Sign-In error:', error);
-
         if (onError && typeof onError === 'function') {
             onError(error);
         }
     };
 
-    // Use the current language for the Google button
-    // Google uses 'uk' for Ukrainian, while our app uses 'ua'
     const locale = currentLanguage === 'ua' ? 'uk' : currentLanguage;
 
-    // Add a custom style to ensure the button is visible in modal contexts
     const buttonStyle = {
         position: 'relative',
         zIndex: 1095,
@@ -67,7 +61,7 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
         display: 'block',
         overflow: 'visible',
         margin: '0 auto',
-        transform: 'scale(0.95)', // Slightly reduce the size of the button
+        transform: 'scale(0.95)',
         maxHeight: '40px'
     };
 
@@ -79,16 +73,19 @@ const GoogleButton = ({onSuccess, onError, isManager = false, useHeaderAuth = fa
                     onError={handleError}
                     useOneTap={false}
                     locale={locale}
-                    type="standard"
-                    theme="filled_blue"
-                    text="signin_with"
-                    shape="rectangular"
-                    logo_alignment="left"
-                    width="100%"
+                    type='standard'
+                    theme='filled_blue'
+                    text='signin_with'
+                    shape='rectangular'
+                    logo_alignment='left'
+                    width='100%'
                 />
             </div>
         </div>
     );
 };
+
+GoogleButton.propTypes = googleButtonPropTypes;
+GoogleButton.defaultProps = googleButtonDefaultProps;
 
 export default GoogleButton;

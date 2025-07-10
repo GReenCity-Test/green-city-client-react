@@ -7,7 +7,7 @@ const SERVER_ADDRESS = API_SETTINGS.serverAddress;
 
 const API_URLS = {
   // Main API URL for GreenCityMVP21
-  MVP: '/mvp',
+  MVP: '',
 
   // User API URL for GreenCityUser21
   USER: '/user',

@@ -33,7 +33,7 @@ const StatRows = () => {
   return (
     <div id="stat-rows">
       {homePageHabitStats.map((stat, index) => (
-        <StatRow key={index} stat={stat} index={index + 1} />
+        <StatRow key={`${stat.action}-${stat.caption}`} stat={stat} index={index + 1} />
       ))}
     </div>
   );

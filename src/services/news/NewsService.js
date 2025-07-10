@@ -155,22 +155,98 @@ class NewsService {
    */
   static async getNewsByFilter(params) {
     try {
-      // Create a new axios instance without interceptors to avoid sending the Authorization header
+      console.log('NewsService.getNewsByFilter called with params:', params);
+      console.log('API_BASE_URL:', API_BASE_URL);
+      console.log('Full URL:', `${API_BASE_URL}/eco-news`);
+
+      // Check if user is authenticated
+      const isAuth = AuthService.isAuthenticated();
+      console.log('User is authenticated:', isAuth);
+
+      // Create headers based on authentication status
+      const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
+
+      // Add Authorization header if user is authenticated
+      if (isAuth) {
+        const token = AuthService.getAccessToken();
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+          console.log('Added Authorization header with token');
+        } else {
+          console.log('User is authenticated but token is missing');
+        }
+      } else {
+        console.log('User is not authenticated, not adding Authorization header');
+      }
+
+      // Create a new axios instance
       const axiosInstance = axios.create();
-      // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news`, {
+
+      // Set up request config
+      const config = {
         params,
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': ''
-        },
+        headers,
         // Disable sending cookies to further reduce request size
         withCredentials: false
-      });
+      };
+
+      console.log('Request config:', JSON.stringify(config));
+
+      // Make the API call
+      console.log('Making API call to:', `${API_BASE_URL}/eco-news`);
+      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news`, config);
+
+      console.log('Response status:', response.status);
+      console.log('Full response:', response);
+
+      // Check if response data exists
+      if (!response.data) {
+        console.error('Response data is empty or undefined');
+        return { page: [], totalElements: 0, totalPages: 0 };
+      }
+
+      console.log('Response data structure:', Object.keys(response.data));
+
+      // Check if page property exists
+      if (response.data.page) {
+        console.log('Response page length:', response.data.page.length);
+        if (response.data.page.length > 0) {
+          console.log('First item in response:', JSON.stringify(response.data.page[0]));
+          console.log('All items in response:', JSON.stringify(response.data.page));
+        } else {
+          console.log('Response page is empty');
+        }
+      } else {
+        console.log('Response does not contain a page property');
+        // Try to adapt the response format if it's not in the expected format
+        if (Array.isArray(response.data)) {
+          console.log('Response data is an array, adapting to expected format');
+          return {
+            page: response.data,
+            totalElements: response.data.length,
+            totalPages: 1
+          };
+        }
+      }
+
       return response.data;
     } catch (error) {
       console.error('Error fetching news by filter:', error);
+
+      // Log more detailed error information
+      if (error.response) {
+        console.error('Error response data:', error.response.data);
+        console.error('Error response status:', error.response.status);
+        console.error('Error response headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
+
       throw error;
     }
   }
