@@ -1,0 +1,8 @@
+This is a placeholder file.
+
+Please generate a proper favicon.ico file from the logo.svg file located at:
+/public/assets/img/logo.svg
+
+See instructions in /public/favicon/README.md for details on how to generate the favicon.ico file.
+
+After generating the favicon.ico file, replace this text file with the actual favicon.ico file.

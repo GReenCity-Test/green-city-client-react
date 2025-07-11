@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getPublicAssetPath } from '../../../constants/imagePaths';
 import './EventDetails.scss';
 
 // This will be implemented later
@@ -42,10 +43,10 @@ const EventDetails = () => {
             on our planet's health. Refreshments will be provided, and all participants
             will receive a free reusable water bottle.`,
           organizer: 'Green City Environmental Group',
-          image: 'assets/img/events/event1.jpg',
+          image: getPublicAssetPath('img/events/event1.jpg'),
           additionalImages: [
-            'assets/img/events/event1-1.jpg',
-            'assets/img/events/event1-2.jpg'
+            getPublicAssetPath('img/events/event1-1.jpg'),
+            getPublicAssetPath('img/events/event1-2.jpg')
           ],
           capacity: 200,
           registeredCount: 150,

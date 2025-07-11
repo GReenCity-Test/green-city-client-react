@@ -39,10 +39,10 @@ export const HOME_IMAGES = {
 export const ABOUT_IMAGES = {
   ILLUSTRATION_MAN: `${BASE_PATHS.PUBLIC}Illustrationman.png`,
   VISION: `${BASE_PATHS.PUBLIC}Vision.png`,
-  ILLUSTRATION_STORE: `${BASE_PATHS.PUBLIC}illustration-store.png`,
-  ILLUSTRATION_MONEY: `${BASE_PATHS.PUBLIC}illustration-money.png`,
-  ILLUSTRATION_RECYCLE: `${BASE_PATHS.PUBLIC}illustration-recycle.png`,
-  ILLUSTRATION_PEOPLE: `${BASE_PATHS.PUBLIC}illustration-people.png`
+  ILLUSTRATION_STORE: `${BASE_PATHS.PUBLIC}illustration-store.svg`,
+  ILLUSTRATION_MONEY: `${BASE_PATHS.PUBLIC}illustration-money.svg`,
+  ILLUSTRATION_RECYCLE: `${BASE_PATHS.PUBLIC}illustration-recycle.svg`,
+  ILLUSTRATION_PEOPLE: `${BASE_PATHS.PUBLIC}illustration-people.svg`
 };
 
 /**
@@ -81,6 +81,21 @@ export const COMMON_IMAGES = {
  */
 export const getImagePath = (category, key) => {
   return category[key];
+};
+
+/**
+ * Helper function to get the correct path for public assets
+ * This ensures that assets are referenced correctly regardless of the environment
+ * 
+ * Usage example:
+ * import { getPublicAssetPath } from '../constants/imagePaths';
+ * const logoPath = getPublicAssetPath('img/logo.svg');
+ * 
+ * @param {string} relativePath - The path relative to the public/assets directory
+ * @returns {string} The full path to the public asset
+ */
+export const getPublicAssetPath = (relativePath) => {
+  return `${process.env.PUBLIC_URL}/assets/${relativePath}`;
 };
 
 /**

@@ -220,10 +220,10 @@ const SignUp = ({ onPageChange }) => {
 
         {/* Google Sign-In Button */}
         <GoogleButton
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          useGetAuth={true}
-        />
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    useGetAuth={false}
+                />
 
         <div className="auth-links">
           <p>{t('auth.alreadyHaveAccount', 'Already have an account?')} {onPageChange ? (

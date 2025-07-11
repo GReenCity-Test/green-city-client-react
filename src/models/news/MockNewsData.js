@@ -23,7 +23,7 @@ export const mockNewsData = [
       name: "Maria Green"
     },
     creationDate: "2023-06-15T10:30:00Z",
-    imagePath: "assets/img/news/urban-gardening.jpg",
+    imagePath: "/assets/img/news/urban-gardening.jpg",
     source: "Green City Blog",
     likes: 128,
     countComments: 24,
@@ -42,7 +42,7 @@ export const mockNewsData = [
       name: "Ocean Defenders"
     },
     creationDate: "2023-07-02T14:45:00Z",
-    imagePath: "assets/img/news/beach-cleanup.jpg",
+    imagePath: "/assets/img/news/beach-cleanup.jpg",
     source: "Ocean Defenders Alliance",
     likes: 215,
     countComments: 42,
@@ -61,7 +61,7 @@ export const mockNewsData = [
       name: "Climate Research Team"
     },
     creationDate: "2023-05-20T09:15:00Z",
-    imagePath: "assets/img/news/remote-work.jpg",
+    imagePath: "/assets/img/news/remote-work.jpg",
     source: "Environmental Science Journal",
     likes: 342,
     countComments: 57,
@@ -80,7 +80,7 @@ export const mockNewsData = [
       name: "Sustainable Living Guide"
     },
     creationDate: "2023-07-10T16:20:00Z",
-    imagePath: "assets/img/news/eco-products.jpg",
+    imagePath: "/assets/img/news/eco-products.jpg",
     source: "Green Home Magazine",
     likes: 189,
     countComments: 31,
@@ -99,7 +99,7 @@ export const mockNewsData = [
       name: "Education Today"
     },
     creationDate: "2023-06-28T11:05:00Z",
-    imagePath: "assets/img/news/school-recycling.jpg",
+    imagePath: "/assets/img/news/school-recycling.jpg",
     source: "Community News Network",
     likes: 156,
     countComments: 19,
@@ -118,7 +118,7 @@ export const mockNewsData = [
       name: "Eco-Innovation Network"
     },
     creationDate: "2023-07-15T13:40:00Z",
-    imagePath: "assets/img/news/eco-conference.jpg",
+    imagePath: "/assets/img/news/eco-conference.jpg",
     source: "Eco-Innovation Network",
     likes: 98,
     countComments: 12,

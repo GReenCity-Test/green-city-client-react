@@ -1,11 +1,10 @@
 import axios from 'axios';
 import AuthService from '../auth/AuthService';
 
-// Import the API URL from the central configuration
-import { MVP_API_URL } from '../../config/api';
+const API_BASE_URL = '/econews';
 
-// Base API URL from central configuration
-const API_BASE_URL = MVP_API_URL;
+// Log the API base URL for debugging
+console.log('NewsService using API_BASE_URL:', API_BASE_URL);
 
 /**
  * Service for news-related API calls
@@ -38,7 +37,8 @@ class NewsService {
 
       console.log('Request config:', JSON.stringify(config));
 
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news/newest`, config);
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}/newest`, config);
 
       console.log('Response received successfully');
       return response.data;
@@ -76,7 +76,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}`, {
         params: { page, size },
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +104,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news/${id}`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -131,7 +133,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news/search`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}/search`, {
         params: { query: searchQuery, page, size },
         headers: {
           'Content-Type': 'application/json',
@@ -151,13 +154,13 @@ class NewsService {
   /**
    * Fetches news articles by filter
    * @param {Object} params - Filter parameters
-   * @returns {Promise<import('../../models/news/EcoNewsDto').EcoNewsDto>} - Promise that resolves to filtered news data
+   * @returns {Promise<{page: *[], totalElements: number, totalPages: number}>} - Promise that resolves to filtered news data
    */
   static async getNewsByFilter(params) {
     try {
       console.log('NewsService.getNewsByFilter called with params:', params);
       console.log('API_BASE_URL:', API_BASE_URL);
-      console.log('Full URL:', `${API_BASE_URL}/eco-news`);
+      console.log('Full URL:', `${API_BASE_URL}`);
 
       // Check if user is authenticated
       const isAuth = AuthService.isAuthenticated();
@@ -196,8 +199,8 @@ class NewsService {
       console.log('Request config:', JSON.stringify(config));
 
       // Make the API call
-      console.log('Making API call to:', `${API_BASE_URL}/eco-news`);
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news`, config);
+      console.log('Making API call to:', `${API_BASE_URL}`);
+      const response = await axiosInstance.get(`${API_BASE_URL}`, config);
 
       console.log('Response status:', response.status);
       console.log('Full response:', response);
@@ -263,7 +266,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}`, {
         params: { 'author-id': authorId, page, size },
         headers: {
           'Content-Type': 'application/json',
@@ -290,7 +294,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news/${id}/recommended`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}/${id}/recommended`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -317,7 +322,8 @@ class NewsService {
       // Create a new axios instance without interceptors to avoid sending the Authorization header
       const axiosInstance = axios.create();
       // Explicitly set minimal headers to reduce request size
-      const response = await axiosInstance.get(`${API_BASE_URL}/eco-news/${newsId}/likes/${userId}`, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axiosInstance.get(`${API_BASE_URL}/${newsId}/likes/${userId}`, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -345,7 +351,8 @@ class NewsService {
         throw new Error('User must be authenticated to like a news article');
       }
 
-      const response = await axios.post(`${API_BASE_URL}/eco-news/${id}/likes`, {});
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.post(`${API_BASE_URL}/${id}/likes`, {});
       return response.data;
     } catch (error) {
       console.error(`Error toggling like for news with ID ${id}:`, error);
@@ -365,7 +372,8 @@ class NewsService {
         throw new Error('User must be authenticated to delete a news article');
       }
 
-      const response = await axios.delete(`${API_BASE_URL}/eco-news/${id}`);
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.delete(`${API_BASE_URL}/${id}`);
       return response.data;
     } catch (error) {
       console.error(`Error deleting news with ID ${id}:`, error);
@@ -385,7 +393,8 @@ class NewsService {
         throw new Error('User must be authenticated to add a news article to favorites');
       }
 
-      const response = await axios.post(`${API_BASE_URL}/eco-news/${id}/favorites`, {});
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.post(`${API_BASE_URL}/${id}/favorites`, {});
       return response.data;
     } catch (error) {
       console.error(`Error adding news ${id} to favorites:`, error);
@@ -405,14 +414,14 @@ class NewsService {
         throw new Error('User must be authenticated to remove a news article from favorites');
       }
 
-      const response = await axios.delete(`${API_BASE_URL}/eco-news/${id}/favorites`, {});
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.delete(`${API_BASE_URL}/${id}/favorites`, {});
       return response.data;
     } catch (error) {
       console.error(`Error removing news ${id} from favorites:`, error);
       throw error;
     }
   }
-
   /**
    * Creates a new news article
    * @param {import('../../models/news/CreateNewsModel').NewsDTO} newsData - News article data
@@ -420,30 +429,45 @@ class NewsService {
    */
   static async createNews(newsData) {
     try {
-      // Check if user is authenticated
       if (!AuthService.isAuthenticated()) {
         throw new Error('User must be authenticated to create a news article');
       }
 
       const formData = new FormData();
-      formData.append('addEcoNewsDtoRequest', JSON.stringify(newsData));
 
+      // Готуємо JSON для addEcoNewsDtoRequest
+      const jsonBody = {
+        title: newsData.title,
+        text: newsData.text,
+        tags: newsData.tags.map(tag => tag.name) // <- перетворюємо у ["Events"]
+      };
+
+      const jsonBlob = new Blob([JSON.stringify(jsonBody)], { type: 'application/json' });
+      formData.append('addEcoNewsDtoRequest', jsonBlob, 'addEcoNewsDtoRequest.json');
+
+      // Додаємо картинку, якщо є
       if (newsData.image) {
         formData.append('image', newsData.image);
       }
 
-      const response = await axios.post(`${API_BASE_URL}/eco-news`, formData, {
+      // Відправляємо на твій фронтовий сервер, щоб він прокинув через проксі
+      const response = await axios.post('/eco-news', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          Authorization: `Bearer ${AuthService.getAccessToken()}`
         }
       });
 
       return response.data;
     } catch (error) {
       console.error('Error creating news:', error);
+      if (error.response) {
+        console.error('Response:', error.response.data);
+        console.error('Status:', error.response.status);
+      }
       throw error;
     }
   }
+
 
   /**
    * Updates a news article
@@ -468,7 +492,8 @@ class NewsService {
         formData.append('image', newsData.image);
       }
 
-      const response = await axios.put(`${API_BASE_URL}/eco-news/${newsData.id}`, formData, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.put(`${API_BASE_URL}/${newsData.id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -498,7 +523,8 @@ class NewsService {
         formData.append('images', image);
       });
 
-      const response = await axios.post(`${API_BASE_URL}/eco-news/files`, formData, {
+      // Remove /eco-news from the path since API_BASE_URL already includes /econews
+      const response = await axios.post(`${API_BASE_URL}/files`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -549,3 +575,4 @@ class NewsService {
 }
 
 export default NewsService;
+

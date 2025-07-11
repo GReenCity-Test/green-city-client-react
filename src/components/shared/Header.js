@@ -52,7 +52,7 @@ const Header = () => {
             <li><Link to="/map">{t('nav.map')}</Link></li>
             <li><Link to="/events">{t('nav.events')}</Link></li>
             <li>
-              <Link to={isAuthenticated() && currentUser?.id ? `/profile/${currentUser.id}` : "/auth/sign-in"}>
+              <Link to={isAuthenticated() ? (currentUser?.id ? `/profile/${currentUser.id}` : "/profile/me") : "/auth/sign-in"}>
                 {t('nav.mySpace')}
               </Link>
             </li>
@@ -78,7 +78,7 @@ const Header = () => {
               </button>
               {showDropdown && (
                 <div className="profile-dropdown">
-                  <Link to={`/profile/${currentUser?.id}`} onClick={() => setShowDropdown(false)}>{t('nav.mySpace')}</Link>
+                  <Link to={currentUser?.id ? `/profile/${currentUser.id}` : "/profile/me"} onClick={() => setShowDropdown(false)}>{t('nav.mySpace')}</Link>
                   <Link to="/ubs-user/orders" onClick={() => setShowDropdown(false)}>{t('nav.myCabinet')}</Link>
                   <button onClick={handleSignOut}>{t('nav.signOut')}</button>
                 </div>

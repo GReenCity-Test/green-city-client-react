@@ -30,9 +30,9 @@ const EventList = () => {
 
         // Mock data for now
         setEvents([
-          { id: 1, title: 'Earth Day Celebration', date: '2023-04-22', location: 'Central Park', image: 'assets/img/events/event1.jpg' },
-          { id: 2, title: 'Beach Cleanup', date: '2023-05-15', location: 'Sunny Beach', image: 'assets/img/events/event2.jpg' },
-          { id: 3, title: 'Tree Planting Day', date: '2023-06-05', location: 'City Forest', image: 'assets/img/events/event3.jpg' },
+          { id: 1, title: 'Earth Day Celebration', date: '2023-04-22', location: 'Central Park', image: '/assets/img/events/event1.jpg' },
+          { id: 2, title: 'Beach Cleanup', date: '2023-05-15', location: 'Sunny Beach', image: '/assets/img/events/event2.jpg' },
+          { id: 3, title: 'Tree Planting Day', date: '2023-06-05', location: 'City Forest', image: '/assets/img/events/event3.jpg' },
         ]);
         setTotalPages(3);
         setError(null);

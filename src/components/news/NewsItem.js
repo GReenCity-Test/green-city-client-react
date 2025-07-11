@@ -12,7 +12,7 @@ import './NewsItem.scss';
  * @returns {JSX.Element} - Rendered component
  */
 const NewsItem = ({ news, isGalleryView = true }) => {
-  const defaultImage = 'assets/img/main-event-placeholder.png';
+  const defaultImage = '/assets/img/main-event-placeholder.png';
 
   /**
    * Format a date string to a readable format
@@ -64,7 +64,11 @@ const NewsItem = ({ news, isGalleryView = true }) => {
 
   return (
     <div className={`news-item ${isGalleryView ? 'gallery-view' : 'list-view'}`}>
-      <Link to={`/news/${news.id}`} className="news-link">
+      <Link 
+        to={`/news/${news.id}`} 
+        className="news-link"
+        state={{ from: window.location.pathname + window.location.search }}
+      >
         <div className="news-image">
           <img src={news.imagePath || defaultImage} alt={news.title} />
         </div>

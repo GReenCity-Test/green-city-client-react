@@ -96,7 +96,7 @@ const SignIn = ({onPageChange, onClose}) => {
                 <GoogleButton
                     onSuccess={handleGoogleSuccess}
                     onError={handleGoogleError}
-                    useGetAuth={true}
+                    useGetAuth={false}
                 />
 
                 {/* Separator */}

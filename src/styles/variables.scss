@@ -47,11 +47,19 @@
 /* Common color variables as SCSS variables for easier use in SCSS files */
 $primary-green: #13aa57;
 $primary-white: #fff;
-$primary-dark-grey: #494a49;
+$secondary-dark-green: #056b33;
+$primary-light-green: #b3e6c9;
+$primary-light-grey: #f5f7f6;
+$secondary-light-grey: #f5f6f6;
 $tertiary-light-grey: #bebebe;
+$quaternary-light-grey: #e6e6e6;
+$primary-dark-grey: #494a49;
+$secondary-dark-grey: #313131;
+$tertiary-grey: #666;
 $quaternary-dark-grey: #444e55;
 $quintynary-light-grey: #9ca7b0;
 $quintynary-dark-grey: rgba(100, 114, 125, 0.18);
+$error-red: #eb180d;
 $whitesmoke-grey: #eff0f1;
 
 /* Breakpoints */

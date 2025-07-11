@@ -10,8 +10,8 @@ const EcoEvents = () => {
   const [latestNews, setLatestNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const eventImg = 'assets/img/main-event-placeholder.png';
-  const arrow = 'assets/img/icon/arrow.svg';
+  const eventImg = '/assets/img/main-event-placeholder.png';
+  const arrow = '/assets/img/icon/arrow.svg';
   const { t } = useTranslation();
 
   useEffect(() => {

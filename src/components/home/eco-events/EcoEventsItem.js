@@ -22,7 +22,7 @@ const EcoEventsItem = ({ ecoEvent, mainEvent = false }) => {
         </h3>
         <p className="event-description">{ecoEvent.content}</p>
         <div className="event-info">
-          <span className="event-author">{ecoEvent.author}</span>
+          <span className="event-author">{ecoEvent.author?.name || 'Unknown Author'}</span>
           <span className="event-date">{formatDate(ecoEvent.creationDate)}</span>
         </div>
       </div>

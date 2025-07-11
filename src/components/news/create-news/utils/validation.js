@@ -60,7 +60,7 @@ export const getFieldError = (field, value) => {
     case 'title':
       if (!value.trim()) {
         return 'Title is required';
-      } else if (value.length > TEXT_CONSTRAINTS.TEXT_MAX_LENGTH) {
+      } else if (value.length > TEXT_CONSTRAINTS.TITLE_MAX_LENGTH) {
         return 'Title must be less than 170 characters';
       }
       break;

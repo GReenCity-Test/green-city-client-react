@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AuthModal from '../../auth/AuthModal';
 import { useTranslation } from '../../../services/translation/TranslationService';
+import { getPublicAssetPath } from '../../../constants/imagePaths';
 import './StatRow.scss';
 
 const StatRow = ({ stat, index }) => {
   const navigate = useNavigate();
-  const locationImage = 'assets/img/icon/location-icon.png';
+  const locationImage = getPublicAssetPath('img/icon/location-icon.svg');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { t } = useTranslation();
 
