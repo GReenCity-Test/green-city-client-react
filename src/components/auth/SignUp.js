@@ -1,32 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTranslation } from '../../services/translation/TranslationService';
 import { AUTH_IMAGES } from '../../constants/imagePaths';
 import GoogleButton from './GoogleButton';
 import ToastNotification from '../shared/ToastNotification';
+import createSignUpSchema from '../../schemas/signUpSchema';
+import { signUpPropTypes, signUpDefaultProps } from './SignUp.propTypes';
 import './Auth.scss';
 
 const SignUp = ({ onPageChange }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [formErrors, setFormErrors] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [touched, setTouched] = useState({
-    name: false,
-    email: false,
-    password: false,
-    confirmPassword: false
-  });
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -37,8 +23,25 @@ const SignUp = ({ onPageChange }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // This effect was previously used to check for success messages
-  // Now we're using a toast notification directly in this component
+  // Create form validation schema with localized messages
+  const signUpSchema = createSignUpSchema(t);
+
+  // Initialize react-hook-form
+  const { 
+    register, 
+    handleSubmit: validateAndSubmit, 
+    formState: { errors, isDirty, isValid },
+    reset
+  } = useForm({
+    resolver: zodResolver(signUpSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
+  });
 
   // Handle successful Google sign-in
   const handleGoogleSuccess = (userData) => {
@@ -50,88 +53,6 @@ const SignUp = ({ onPageChange }) => {
     setGeneralError(error.message || t('auth.googleSignInError', 'Failed to sign in with Google. Please try again.'));
   };
 
-  // Validate form fields
-  const validateField = (name, value) => {
-    let error = '';
-
-    switch (name) {
-      case 'name':
-        if (!value) {
-          error = t('auth.nameRequired', 'Name is required');
-        } else if (value.length < 2 || value.length > 30) {
-          error = t('auth.nameLength', 'Name must be between 2 and 30 characters');
-        }
-        break;
-      case 'email':
-        if (!value) {
-          error = t('auth.emailRequired', 'Email is required');
-        } else if (!/\S+@\S+\.\S+/.test(value)) {
-          error = t('auth.emailInvalid', 'This is not a valid email');
-        }
-        break;
-      case 'password':
-        if (!value) {
-          error = t('auth.passwordRequired', 'Password is required');
-        } else if (value.length < 8) {
-          error = t('auth.passwordMinLength', 'Password must be at least 8 characters long');
-        } else if (value.length > 20) {
-          error = t('auth.passwordMaxLength', 'Password must be less than 20 characters');
-        } else if (!/^[a-zA-Z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/.test(value)) {
-          error = t('auth.passwordInvalidSymbols', 'Password contains invalid symbols');
-        }
-        break;
-      case 'confirmPassword':
-        if (!value) {
-          error = t('auth.confirmPasswordRequired', 'Please confirm your password');
-        } else if (value !== formData.password) {
-          error = t('auth.passwordsDoNotMatch', 'Passwords do not match');
-        }
-        break;
-      default:
-        break;
-    }
-
-    return error;
-  };
-
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-
-    // Validate field if it's been touched
-    if (touched[name]) {
-      setFormErrors({
-        ...formErrors,
-        [name]: validateField(name, value)
-      });
-    }
-
-    // Special case for confirmPassword - validate it when password changes
-    if (name === 'password' && touched.confirmPassword && formData.confirmPassword) {
-      setFormErrors({
-        ...formErrors,
-        confirmPassword: formData.confirmPassword !== value ? 'Passwords do not match' : ''
-      });
-    }
-  };
-
-  // Handle field blur (mark as touched)
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-    setTouched({
-      ...touched,
-      [name]: true
-    });
-    setFormErrors({
-      ...formErrors,
-      [name]: validateField(name, value)
-    });
-  };
-
   // Toggle password visibility
   const togglePasswordVisibility = (field) => {
     if (field === 'password') {
@@ -141,44 +62,23 @@ const SignUp = ({ onPageChange }) => {
     }
   };
 
-  // Form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Mark all fields as touched
-    const allTouched = Object.keys(formData).reduce((acc, key) => {
-      acc[key] = true;
-      return acc;
-    }, {});
-    setTouched(allTouched);
-
-    // Validate all fields
-    const errors = Object.keys(formData).reduce((acc, key) => {
-      acc[key] = validateField(key, formData[key]);
-      return acc;
-    }, {});
-    setFormErrors(errors);
-
-    // Check if there are any errors
-    const hasErrors = Object.values(errors).some(error => error);
-    if (hasErrors) {
-      return;
-    }
-
+  // Form submission handler
+  const onSubmit = async (data) => {
     try {
       setLoading(true);
       setGeneralError('');
 
       // Create user data object for API
       const userData = {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password
+        name: data.name,
+        email: data.email,
+        password: data.password
       };
 
       await signUp(userData);
       setToastMessage(t('auth.registrationSuccess', 'Congratulations! You have successfully registered on the site. Please confirm your email address in the email box.'));
       setShowToast(true);
+      reset();
 
       // After showing the toast, navigate to sign-in page after a short delay
       setTimeout(() => {
@@ -194,14 +94,12 @@ const SignUp = ({ onPageChange }) => {
 
   // Get input class based on validation state
   const getInputClass = (fieldName) => {
-    if (!touched[fieldName]) return '';
-    return formErrors[fieldName] ? 'input-error' : 'input-success';
+    return errors[fieldName] ? 'input-error' : isDirty ? 'input-success' : '';
   };
 
   // Get label class based on validation state
   const getLabelClass = (fieldName) => {
-    if (!touched[fieldName]) return '';
-    return formErrors[fieldName] ? 'label-error' : '';
+    return errors[fieldName] ? 'label-error' : '';
   };
 
   // Handle closing the toast notification
@@ -217,23 +115,20 @@ const SignUp = ({ onPageChange }) => {
         <p className="welcome-text">{t('auth.welcomeSignUp', 'Hello! Please enter your details to sign up.')}</p>
         {generalError && <div className="error-message general-error">{generalError}</div>}
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={validateAndSubmit(onSubmit)}>
           <div className="form-group">
             <label htmlFor="name" className={getLabelClass('name')}>{t('auth.name', 'Name')}</label>
             <input
               type="text"
               id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
               placeholder={t('auth.namePlaceholder', 'Enter your name')}
               className={getInputClass('name')}
               aria-describedby="name-error"
+              {...register('name')}
             />
-            {touched.name && formErrors.name && (
+            {errors.name && (
               <div className="field-error-message" id="name-error" role="alert">
-                {formErrors.name}
+                {errors.name.message}
               </div>
             )}
           </div>
@@ -242,17 +137,14 @@ const SignUp = ({ onPageChange }) => {
             <input
               type="email"
               id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
               placeholder={t('auth.emailPlaceholder', 'example@email.com')}
               className={getInputClass('email')}
               aria-describedby="email-error"
+              {...register('email')}
             />
-            {touched.email && formErrors.email && (
+            {errors.email && (
               <div className="field-error-message" id="email-error" role="alert">
-                {formErrors.email}
+                {errors.email.message}
               </div>
             )}
           </div>
@@ -262,13 +154,10 @@ const SignUp = ({ onPageChange }) => {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
                 placeholder={t('auth.passwordPlaceholder', 'Enter your password')}
                 className={getInputClass('password')}
                 aria-describedby="password-error"
+                {...register('password')}
               />
               <button
                 type="button"
@@ -282,13 +171,10 @@ const SignUp = ({ onPageChange }) => {
                 />
               </button>
             </div>
-            {touched.password && formErrors.password && (
+            {errors.password && (
               <div className="field-error-message" id="password-error" role="alert">
-                {formErrors.password}
+                {errors.password.message}
               </div>
-            )}
-            {touched.password && formData.password.length === 0 && (
-              <p className="password-hint">{t('auth.passwordMinLength', 'Password must be at least 8 characters long')}</p>
             )}
           </div>
           <div className="form-group">
@@ -297,13 +183,10 @@ const SignUp = ({ onPageChange }) => {
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                onBlur={handleBlur}
                 placeholder={t('auth.confirmPasswordPlaceholder', 'Confirm your password')}
                 className={getInputClass('confirmPassword')}
                 aria-describedby="confirm-password-error"
+                {...register('confirmPassword')}
               />
               <button
                 type="button"
@@ -317,17 +200,16 @@ const SignUp = ({ onPageChange }) => {
                 />
               </button>
             </div>
-            {touched.confirmPassword && formErrors.confirmPassword && (
+            {errors.confirmPassword && (
               <div className="field-error-message" id="confirm-password-error" role="alert">
-                {formErrors.confirmPassword}
+                {errors.confirmPassword.message}
               </div>
             )}
           </div>
           <button
             type="submit"
             className="submit-button"
-            disabled={loading || formErrors.name || formErrors.email || formErrors.password || formErrors.confirmPassword ||
-                     !formData.name || !formData.email || !formData.password || !formData.confirmPassword}
+            disabled={loading || !isValid}
           >
             {loading ? t('auth.signingUp', 'Signing Up...') : t('auth.signUpButton', 'Sign Up')}
           </button>
@@ -338,10 +220,10 @@ const SignUp = ({ onPageChange }) => {
 
         {/* Google Sign-In Button */}
         <GoogleButton
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          useGetAuth={true}
-        />
+                    onSuccess={handleGoogleSuccess}
+                    onError={handleGoogleError}
+                    useGetAuth={false}
+                />
 
         <div className="auth-links">
           <p>{t('auth.alreadyHaveAccount', 'Already have an account?')} {onPageChange ? (
@@ -364,8 +246,7 @@ const SignUp = ({ onPageChange }) => {
   );
 };
 
-SignUp.propTypes = {
-  onPageChange: PropTypes.func
-};
+SignUp.propTypes = signUpPropTypes;
+SignUp.defaultProps = signUpDefaultProps;
 
 export default SignUp;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { USER_API_URL } from '../../config/api';
+
 
 // Base API URL using proxy configuration
 const API_BASE_URL = '/user';

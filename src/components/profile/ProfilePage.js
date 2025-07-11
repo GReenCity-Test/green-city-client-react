@@ -8,6 +8,7 @@ import EcoPlaces from './eco-places/EcoPlaces';
 import ToDoList from './todo-list/ToDoList';
 import CalendarWeek from './calendar/CalendarWeek';
 import ProfileCards from './profile-cards/ProfileCards';
+import { PROFILE_IMAGES } from '../../constants/imagePaths';
 import './ProfilePage.scss';
 
 const ProfilePage = () => {
@@ -32,27 +33,61 @@ const ProfilePage = () => {
     const currentUserId = currentUser?.id?.toString();
     setIsCurrentUser(currentUserId === userId);
 
+    // Check if userId is valid
+    if (!userId || userId === 'undefined' || userId === 'null') {
+      console.error('Invalid userId:', userId);
+      setError('Invalid user ID. Please try again later.');
+      setLoading(false);
+      return;
+    }
+
     loadUserData();
   }, [userId, currentUser, isAuthenticated, navigate]);
 
   const loadUserData = async () => {
     try {
       setLoading(true);
-
-      // Load user profile, habits, and statistics in parallel
-      const [profileData, habitsData, statisticsData] = await Promise.all([
-        UserService.getUserProfile(userId),
-        UserService.getUserHabits(userId),
-        UserService.getUserHabitStatistics(userId)
-      ]);
-
-      setProfile(profileData);
-      setHabits(habitsData);
-      setStatistics(statisticsData);
       setError(null);
+
+      console.log('Loading user data for userId:', userId);
+
+      // Load user profile first to verify the user exists
+      try {
+        const profileData = await UserService.getUserProfile(userId);
+        setProfile(profileData);
+
+        // If profile loaded successfully, load habits and statistics
+        try {
+          const [habitsData, statisticsData] = await Promise.all([
+            UserService.getUserHabits(userId),
+            UserService.getUserHabitStatistics(userId)
+          ]);
+
+          setHabits(habitsData);
+          setStatistics(statisticsData);
+        } catch (innerError) {
+          console.error('Error loading habits or statistics:', innerError);
+          // Still show the profile, but with a warning about incomplete data
+          setError('Some user data could not be loaded. Profile information may be incomplete.');
+        }
+      } catch (profileError) {
+        console.error('Error loading user profile:', profileError);
+
+        if (profileError.response && profileError.response.status === 404) {
+          setError('User profile not found. Please check the user ID and try again.');
+        } else if (profileError.response && profileError.response.status === 401) {
+          setError('Authentication error. Please sign in again to view this profile.');
+          // Redirect to sign-in page after a short delay
+          setTimeout(() => {
+            navigate('/auth/sign-in', { state: { message: 'Please sign in to view profiles.' } });
+          }, 2000);
+        } else {
+          setError('Failed to load user data. Please try again later.');
+        }
+      }
     } catch (error) {
-      console.error('Error loading user data:', error);
-      setError('Failed to load user data. Please try again later.');
+      console.error('Unexpected error in loadUserData:', error);
+      setError('An unexpected error occurred. Please try again later.');
     } finally {
       setLoading(false);
     }
@@ -125,7 +160,7 @@ const ProfilePage = () => {
         {/* Profile Header with User Info and Progress */}
         <div className="profile-header">
           <div className="profile-avatar">
-            <img src={profile?.profilePicturePath || 'assets/img/default-avatar.png'} alt="Profile" />
+            <img src={profile?.profilePicturePath || PROFILE_IMAGES.DEFAULT_AVATAR} alt="Profile" />
           </div>
           <div className="profile-info">
             <h1>{profile?.name || 'User'}</h1>

@@ -14,7 +14,7 @@ const StatRows = () => {
         caption: 'bags',
         count: 1234,
         question: 'And how many packages did you not take today?',
-        iconPath: 'assets/img/habit-pic-bag.png',
+        iconPath: '/assets/img/habit-pic-bag.png',
         locationText: 'you can buy eco-bags here'
       },
       {
@@ -22,7 +22,7 @@ const StatRows = () => {
         caption: 'cups',
         count: 5678,
         question: 'And how many cups did you not throw away today?',
-        iconPath: 'assets/img/habit-pic-cup.png',
+        iconPath: '/assets/img/habit-pic-cup.png',
         locationText: 'places that make a discount on a drink in your cup'
       }
     ];
@@ -33,7 +33,7 @@ const StatRows = () => {
   return (
     <div id="stat-rows">
       {homePageHabitStats.map((stat, index) => (
-        <StatRow key={index} stat={stat} index={index + 1} />
+        <StatRow key={`${stat.action}-${stat.caption}`} stat={stat} index={index + 1} />
       ))}
     </div>
   );

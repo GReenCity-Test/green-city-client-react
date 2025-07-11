@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SearchService from '../../../services/search/SearchService';
 import './Search.scss';
 
@@ -9,6 +10,7 @@ import './Search.scss';
  * @returns {JSX.Element} - Rendered component
  */
 const Search = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({
@@ -155,7 +157,7 @@ const Search = () => {
 
     return (
       <div className="search-results-section">
-        <h3 className="search-results-title">{type.charAt(0).toUpperCase() + type.slice(1)}</h3>
+        <h3 className="search-results-title">{t(`search.results.${type}`)}</h3>
         <ul className="search-results-list">
           {results.map(result => (
             <li
@@ -189,7 +191,7 @@ const Search = () => {
               ref={inputRef}
               type="text"
               className="search-input"
-              placeholder="Search..."
+              placeholder={t('search.placeholder')}
               value={searchQuery}
               onChange={handleInputChange}
             />
@@ -207,47 +209,47 @@ const Search = () => {
               className={`search-tab ${activeTab === 'all' ? 'active' : ''}`}
               onClick={() => handleTabChange('all')}
             >
-              All
+              {t('search.tabs.all')}
             </button>
             <button
               className={`search-tab ${activeTab === 'ecoNews' ? 'active' : ''}`}
               onClick={() => handleTabChange('ecoNews')}
             >
-              News
+              {t('search.tabs.news')}
             </button>
             <button
               className={`search-tab ${activeTab === 'events' ? 'active' : ''}`}
               onClick={() => handleTabChange('events')}
             >
-              Events
+              {t('search.tabs.events')}
             </button>
             <button
               className={`search-tab ${activeTab === 'tips' ? 'active' : ''}`}
               onClick={() => handleTabChange('tips')}
             >
-              Tips
+              {t('search.tabs.tips')}
             </button>
             <button
               className={`search-tab ${activeTab === 'places' ? 'active' : ''}`}
               onClick={() => handleTabChange('places')}
             >
-              Places
+              {t('search.tabs.places')}
             </button>
             <button
               className={`search-tab ${activeTab === 'users' ? 'active' : ''}`}
               onClick={() => handleTabChange('users')}
             >
-              Users
+              {t('search.tabs.users')}
             </button>
           </div>
 
           <div className="search-results">
             {loading ? (
-              <div className="search-loading">Searching...</div>
+              <div className="search-loading">{t('search.searching')}</div>
             ) : searchQuery.trim().length < 3 ? (
-              <div className="search-prompt">Enter at least 3 characters to search</div>
+              <div className="search-prompt">{t('search.prompt')}</div>
             ) : countTotalResults() === 0 ? (
-              <div className="search-no-results">No results found</div>
+              <div className="search-no-results">{t('search.no-results')}</div>
             ) : (
               Object.entries(getFilteredResults()).map(([type, results]) =>
                 renderResults(results, type)

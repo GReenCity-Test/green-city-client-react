@@ -5,6 +5,7 @@ import NewsService from '../../services/news/NewsService';
 import NewsItem from './NewsItem';
 import TagFilter from '../shared/TagFilter';
 import { tagsListEcoNewsData } from '../../models/news/NewsConstants';
+import { getMockNews } from '../../models/news/MockNewsData';
 import './NewsPage.scss';
 
 const NewsPage = () => {
@@ -27,16 +28,85 @@ const NewsPage = () => {
   // Auth context
   const { isAuthenticated, currentUser } = useAuth();
 
-  // Load news on initial render and when filters change
+  // Load news on the initial render and when filters change
   useEffect(() => {
-    loadNews(true);
+    loadNews(true).catch(err => {
+      console.error("Error in useEffect loadNews:", err);
+    });
   }, [selectedTags, searchQuery, showFavorites]);
+
+  // Process API response and update state
+  const processApiResponse = (response, reset, currentPage) => {
+    if (response.page && response.page.length > 0) {
+      console.log('Successfully fetched news from database');
+
+      setNews(prevNews => reset ? response.page : [...prevNews, ...response.page]);
+      setTotalNews(response.totalElements);
+      setHasMore(currentPage < response.totalPages - 1);
+      setPage(prevPage => reset ? 1 : prevPage + 1);
+      setError(null);
+      return true;
+    } else {
+      console.warn('API returned empty news array');
+      return false;
+    }
+  };
+
+  // Filter mock news based on current filters
+  const getFilteredMockNews = (mockNews) => {
+    let filteredNews = mockNews;
+
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filteredNews = filteredNews.filter(item => 
+        item.title.toLowerCase().includes(query) || 
+        (item.content && item.content.toLowerCase().includes(query))
+      );
+    }
+
+    // Filter by tags
+    if (selectedTags && selectedTags.length > 0) {
+      filteredNews = filteredNews.filter(item => 
+        item.tags && item.tags.some(tag => selectedTags.includes(tag))
+      );
+    }
+
+    // Filter by favorites if needed
+    if (showFavorites) {
+      filteredNews = filteredNews.map(item => ({
+        ...item,
+        favorite: Math.random() > 0.5 // Randomly mark ~50% as favorites
+      })).filter(item => item.favorite);
+    }
+
+    return filteredNews;
+  };
+
+  // Process mock news data and update state
+  const processMockNews = (reset, currentPage) => {
+    const mockNews = getMockNews();
+    console.log('Mock news data loaded:', mockNews.length, 'items');
+
+    const filteredMockNews = getFilteredMockNews(mockNews);
+
+    // Simulate pagination with mock data
+    const startIndex = reset ? 0 : (currentPage * pageSize);
+    const endIndex = startIndex + pageSize;
+    const paginatedMockNews = filteredMockNews.slice(startIndex, endIndex);
+
+    // Update state with mock data
+    setNews(prevNews => reset ? paginatedMockNews : [...prevNews, ...paginatedMockNews]);
+    setTotalNews(filteredMockNews.length);
+    setHasMore(endIndex < filteredMockNews.length);
+    setPage(prevPage => reset ? 1 : prevPage + 1);
+  };
 
   // Load news from API
   const loadNews = async (reset = false) => {
+    const currentPage = reset ? 0 : page;
     try {
       setLoading(true);
-      const currentPage = reset ? 0 : page;
 
       if (reset) {
         setNews([]);
@@ -55,19 +125,22 @@ const NewsPage = () => {
 
       // Fetch news with filters
       const response = await NewsService.getNewsByFilter(params);
+      processApiResponse(response, reset, currentPage);
 
-      // Update state with response data
-      if (response.page) {
-        setNews(prevNews => reset ? response.page : [...prevNews, ...response.page]);
-        setTotalNews(response.totalElements);
-        setHasMore(currentPage < response.totalPages - 1);
-        setPage(prevPage => reset ? 1 : prevPage + 1);
-      }
-
-      setError(null);
     } catch (error) {
       console.error('Error loading news:', error);
-      setError('Failed to load news. Please try again later.');
+
+      // Log error details
+      if (error.response) {
+        console.error('Error response:', error.response.status);
+      } else if (error.request) {
+        console.error('Error request:', error.request);
+      } else {
+        console.error('Error message:', error.message);
+      }
+
+      setError('Failed to load news. Using mock data instead.');
+      processMockNews(reset, currentPage);
     } finally {
       setLoading(false);
     }
@@ -149,12 +222,33 @@ const NewsPage = () => {
   // Load more news
   const loadMore = () => {
     if (!loading && hasMore) {
-      loadNews(false);
+      loadNews(false).catch(err => {
+        console.error("Error in loadMore:", err);
+      });
     }
   };
 
-  // Check if there are no news to display
+  // Check if there is no news to display
   const noNewsToDisplay = !loading && news.length === 0 && !error;
+
+  // Check if we're displaying mock data
+  const isShowingMockData = error && error.includes('Using mock data');
+
+  // Check if we're displaying real data from the database
+  const isShowingRealData = !isShowingMockData && news.length > 0;
+
+  // Get the appropriate message for no news state
+  const getNoNewsMessage = () => {
+    if (showFavorites) {
+      return "You don't have any favorite news articles yet.";
+    }
+
+    if (selectedTags.length > 0) {
+      return "No news articles match your selected filters.";
+    }
+
+    return "No news articles available at the moment.";
+  };
 
   return (
     <div className="news-page">
@@ -232,13 +326,50 @@ const NewsPage = () => {
           </div>
         )}
 
+        {/* Real data indicator */}
+        {isShowingRealData && (
+          <div className="real-data-indicator" style={{
+            backgroundColor: '#e8f5e9',
+            border: '1px solid #a5d6a7',
+            borderRadius: '4px',
+            padding: '10px',
+            marginBottom: '15px',
+            color: '#2e7d32',
+            textAlign: 'center'
+          }}>
+            <p style={{ margin: 0 }}>
+              <img src="/assets/img/icon/check.svg" alt="success" style={{ width: '16px', height: '16px', marginRight: '5px' }} /> Displaying real news data from the database
+            </p>
+          </div>
+        )}
+
+        {/* Mock data indicator */}
+        {isShowingMockData && (
+          <div className="mock-data-indicator" style={{
+            backgroundColor: '#f8f9fa',
+            border: '1px solid #ddd',
+            borderRadius: '4px',
+            padding: '10px',
+            marginBottom: '15px',
+            color: '#666',
+            textAlign: 'center'
+          }}>
+            <p style={{ margin: 0 }}>
+              <img src="/assets/img/icon/info.svg" alt="info" style={{ width: '16px', height: '16px', marginRight: '5px' }} /> Displaying mock news data for demonstration purposes
+            </p>
+          </div>
+        )}
+
         {/* Error message */}
-        {error && <div className="error-message">{error}</div>}
+        {error && !isShowingMockData && <div className="error-message">{error}</div>}
 
         {/* News grid/list */}
         <div className={isGalleryView ? "news-grid" : "news-list"}>
           {news.map(newsItem => (
-            <div key={newsItem.id} className="news-item-container">
+            <div 
+              key={newsItem.id} 
+              className="news-item-container"
+            >
               <NewsItem
                 news={newsItem}
                 isGalleryView={isGalleryView}
@@ -278,11 +409,7 @@ const NewsPage = () => {
           <div className="no-news">
             <h3>No news found</h3>
             <p>
-              {showFavorites
-                ? "You don't have any favorite news articles yet."
-                : selectedTags.length > 0
-                  ? "No news articles match your selected filters."
-                  : "No news articles available at the moment."}
+              {getNoNewsMessage()}
             </p>
           </div>
         )}

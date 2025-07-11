@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TagFilter.scss';
+import { useTranslation } from '../../../services/translation/TranslationService';
 
 /**
  * TagFilter component for filtering content by tags
@@ -14,6 +15,7 @@ import './TagFilter.scss';
 const TagFilter = ({ tags, onTagSelect, selectedTags = [], storageKey = 'tag-filter' }) => {
   // State for tracking active tags
   const [activeTags, setActiveTags] = useState(selectedTags);
+  const { currentLanguage } = useTranslation();
 
   // Initialize from localStorage if available
   useEffect(() => {
@@ -69,7 +71,7 @@ const TagFilter = ({ tags, onTagSelect, selectedTags = [], storageKey = 'tag-fil
             className={`tag-button ${activeTags.includes(tag.name) ? 'active' : ''}`}
             onClick={() => handleTagClick(tag.name)}
           >
-            {tag.name}
+            {currentLanguage === 'ua' ? tag.nameUa : tag.name}
           </button>
         ))}
       </div>

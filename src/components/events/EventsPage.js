@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import './EventsPage.scss';
 
 // Import components
@@ -16,6 +17,7 @@ import AbsenceEvents from './absence-events/AbsenceEvents';
 const EventsPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
@@ -42,20 +44,20 @@ const EventsPage = () => {
   return (
     <div className="events-page">
       <div className="container">
-        <h1 className="events-page-title">Events</h1>
+        <h1 className="events-page-title">{t('events.title')}</h1>
 
         <div className="events-tabs">
           <button
             className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
             onClick={() => handleTabChange('all')}
           >
-            All Events
+            {t('events.tabs.all')}
           </button>
           <button
             className={`tab-button ${activeTab === 'absence' ? 'active' : ''}`}
             onClick={() => handleTabChange('absence')}
           >
-            Absence Events
+            {t('events.tabs.absence')}
           </button>
         </div>
 

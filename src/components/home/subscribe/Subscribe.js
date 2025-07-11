@@ -11,7 +11,7 @@ const Subscribe = () => {
   // Email regex pattern
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  const qrCode = 'assets/img/qr-code.png';
+  const qrCode = '/assets/img/qr-code.png';
 
   const validateEmail = (value) => {
     const isValid = value.length > 0 && emailRegex.test(value);

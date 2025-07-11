@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { USER_API_URL } from '../../config/api';
-import { AUTH_SETTINGS } from '../../config/settings';
+import { AUTH_SETTINGS, API_SETTINGS } from '../../config/settings';
 
-// Base API URL from central configuration
-const API_BASE_URL = '';
-const GOOGLE_SECURITY_LINK = `/googleSecurity`;
-const GOOGLE_SECURITY_POST_LINK = `/googleSecurity`;
-const GOOGLE_SECURITY_HEADER_LINK = `/googleSecurityHeader`;
+// Use direct paths for proxy to work correctly
+const SERVER_ADDRESS = API_SETTINGS.serverAddress;
+// Ensure we're using the proxy paths that are configured in setupProxy.js
+// Use absolute URLs to ensure requests go directly to the backend server
+const GOOGLE_SECURITY_LINK = 'http://localhost:8060/googleSecurity';
+const GOOGLE_SECURITY_POST_LINK = 'http://localhost:8060/googleSecurity';
+const GOOGLE_SECURITY_HEADER_LINK = 'http://localhost:8060/googleSecurityHeader';
 
 /**
  * Service for Google authentication
@@ -20,20 +22,34 @@ class GoogleAuthService {
    */
   static async signIn(token, language = 'en') {
     try {
-      // Use POST request with token in the body
-      const response = await axios.post(GOOGLE_SECURITY_POST_LINK, {
-        token: token,
-        lang: language
-      }, {
+      console.log('GoogleAuthService.signIn: Starting authentication with POST method');
+      console.log('Using endpoint:', GOOGLE_SECURITY_POST_LINK);
+      console.log('Token length:', token ? token.length : 0);
+      console.log('Language:', language);
+      // Create a custom axios instance for this request
+      const axiosInstance = axios.create({
+        // No baseURL needed as we're using absolute URLs
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        withCredentials: false
+        // Enable withCredentials to allow cookies to be sent
+        withCredentials: true
       });
+
+      // Use POST request with token in the body
+      console.log('Sending POST request to:', GOOGLE_SECURITY_POST_LINK);
+      const response = await axiosInstance.post(GOOGLE_SECURITY_POST_LINK, {
+        idToken: token,
+        lang: language
+      });
+
+      console.log('Received response with status:', response.status);
+      console.log('Response headers:', JSON.stringify(response.headers, null, 2));
 
       // Ensure response data has the expected token properties
       const userData = { ...response.data };
+      console.log('Response data keys:', Object.keys(userData));
 
       // Check if refreshToken is missing but there's an alternative property
       if (!userData.refreshToken) {
@@ -54,7 +70,7 @@ class GoogleAuthService {
       // Provide more detailed error logging for CORS and network issues
       if (error.message && error.message.includes('Network Error')) {
         console.error('Network error during Google sign-in with POST. This might be a CORS issue:', error);
-        console.error('Server address:', API_BASE_URL);
+        console.error('Server address:', SERVER_ADDRESS);
         console.error('Google security link:', GOOGLE_SECURITY_POST_LINK);
 
         // Create a more user-friendly error
@@ -76,20 +92,35 @@ class GoogleAuthService {
    */
   static async signInWithHeader(token, language = 'en') {
     try {
-      // Use POST request with token in the Authorization header
-      const response = await axios.post(GOOGLE_SECURITY_HEADER_LINK, {
-        lang: language
-      }, {
+      console.log('GoogleAuthService.signInWithHeader: Starting authentication with header method');
+      console.log('Using endpoint:', GOOGLE_SECURITY_HEADER_LINK);
+      console.log('Token length:', token ? token.length : 0);
+      console.log('Language:', language);
+      // Create a custom axios instance for this request
+      const axiosInstance = axios.create({
+        // No baseURL needed as we're using absolute URLs
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        withCredentials: false
+        // Enable withCredentials to allow cookies to be sent
+        withCredentials: true
       });
+
+      // Use POST request with token in the Authorization header and body
+      console.log('Sending POST request to:', GOOGLE_SECURITY_HEADER_LINK);
+      const response = await axiosInstance.post(GOOGLE_SECURITY_HEADER_LINK, {
+        idToken: token,
+        lang: language
+      });
+
+      console.log('Received response with status:', response.status);
+      console.log('Response headers:', JSON.stringify(response.headers, null, 2));
 
       // Ensure response data has the expected token properties
       const userData = { ...response.data };
+      console.log('Response data keys:', Object.keys(userData));
 
       // Check if refreshToken is missing but there's an alternative property
       if (!userData.refreshToken) {
@@ -110,7 +141,7 @@ class GoogleAuthService {
       // Provide more detailed error logging for CORS and network issues
       if (error.message && error.message.includes('Network Error')) {
         console.error('Network error during Google sign-in with header. This might be a CORS issue:', error);
-        console.error('Server address:', API_BASE_URL);
+        console.error('Server address:', SERVER_ADDRESS);
         console.error('Google security header link:', GOOGLE_SECURITY_HEADER_LINK);
 
         // Create a more user-friendly error
@@ -132,25 +163,41 @@ class GoogleAuthService {
    */
   static async signInWithGet(idToken, language = 'en') {
     try {
-      console.log('Sending Google sign-in request with GET method');
-      console.log('idToken:', idToken ? `${idToken.substring(0, 10)}...` : 'null');
-      console.log('language:', language);
+      console.log('GoogleAuthService.signInWithGet: Starting authentication with GET method');
+      console.log('Using endpoint:', GOOGLE_SECURITY_LINK);
+      console.log('Token length:', idToken ? idToken.length : 0);
+      console.log('Token preview:', idToken ? `${idToken.substring(0, 10)}...` : 'null');
+      console.log('Language:', language);
 
-      // Use GET request with idToken as URL parameter
-      const response = await axios.get(GOOGLE_SECURITY_LINK, {
-        params: {
-          idToken: idToken,
-          lang: language
-        },
+      // Create a custom axios instance for this request
+      const axiosInstance = axios.create({
+        // No baseURL needed as we're using absolute URLs
         headers: {
+          'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': `Bearer ${idToken}`
         },
-        withCredentials: false
+        // Enable withCredentials to allow cookies to be sent
+        withCredentials: true
       });
+
+      // Use GET request with idToken as URL parameter
+      console.log('Sending GET request to:', GOOGLE_SECURITY_LINK);
+      console.log('With params:', { idToken: idToken ? `${idToken.substring(0, 10)}...` : 'null', lang: language });
+
+      const response = await axiosInstance.get(GOOGLE_SECURITY_LINK, {
+        params: {
+          idToken: idToken,
+          lang: language
+        }
+      });
+
+      console.log('Received response with status:', response.status);
+      console.log('Response headers:', JSON.stringify(response.headers, null, 2));
 
       // Ensure response data has the expected token properties
       const userData = { ...response.data };
+      console.log('Response data keys:', Object.keys(userData));
 
       // Check if refreshToken is missing but there's an alternative property
       if (!userData.refreshToken) {
@@ -171,7 +218,7 @@ class GoogleAuthService {
       // Provide more detailed error logging for CORS and network issues
       if (error.message && error.message.includes('Network Error')) {
         console.error('Network error during Google sign-in with GET. This might be a CORS issue:', error);
-        console.error('Server address:', API_BASE_URL);
+        console.error('Server address:', SERVER_ADDRESS);
         console.error('Google security link:', GOOGLE_SECURITY_LINK);
 
         // Create a more user-friendly error

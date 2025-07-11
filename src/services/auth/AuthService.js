@@ -2,8 +2,7 @@ import axios from 'axios';
 import { USER_API_URL } from '../../config/api';
 import { AUTH_SETTINGS, API_SETTINGS } from '../../config/settings';
 
-// Base API URL from central configuration
-// Using relative URL for proxy to work correctly
+// Use direct paths for proxy to work correctly
 const API_BASE_URL = '/ownSecurity';
 
 // Token storage keys
@@ -154,6 +153,10 @@ class AuthService {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_ID_KEY);
+
+    // Also clear the Authorization cookie
+    document.cookie = 'Authorization=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; samesite=strict';
+    console.log('Cleared Authorization cookie');
   }
 
   /**
@@ -162,17 +165,14 @@ class AuthService {
    */
   static async getCurrentUser() {
     try {
-      // Create a new axios instance without interceptors
-      const axiosInstance = axios.create();
+      // Log for debugging
+      console.log('Getting current user with token:', this.getAccessToken() ? 'Token exists' : 'No token');
 
-      const response = await axiosInstance.get(`/user/me`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        // Disable sending cookies to further reduce request size
-        withCredentials: false
-      });
+      // Use the global axios instance with interceptors to benefit from token refresh
+      const response = await axios.get('/user/me');
+
+      // Log the response data structure for debugging
+      console.log('Current user response data:', response.data);
 
       return response.data;
     } catch (error) {
@@ -220,6 +220,9 @@ class AuthService {
       // Ensure we properly store the new tokens
       this.setTokens(response.data);
       console.debug('Token refresh successful');
+
+      // The setTokens method now also updates the Authorization cookie
+
       return response.data;
     } catch (error) {
       console.error('Error refreshing token:', error);
@@ -267,12 +270,17 @@ class AuthService {
   }
 
   /**
-   * Set tokens in local storage
+   * Set tokens in local storage and cookies
    * @param {Object} data - Token data
    */
   static setTokens(data) {
     if (data.accessToken) {
       localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+
+      // Also set the token as a cookie for the proxy middleware to access
+      // Set secure and httpOnly to false to allow JavaScript access
+      document.cookie = `Authorization=Bearer ${data.accessToken}; path=/; max-age=3600; samesite=strict`;
+      console.log('Set Authorization cookie for proxy middleware');
     } else {
       console.warn('No access token provided to setTokens');
     }
@@ -297,10 +305,33 @@ class AuthService {
       console.warn('Data received:', JSON.stringify(data, null, 2));
     }
 
-    if (data.userId) {
-      localStorage.setItem(USER_ID_KEY, data.userId);
+    // Check for user ID with different possible property names
+    let userId = data.userId;
+    if (!userId) {
+      // Check for common alternative property names
+      if (data.id) {
+        userId = data.id;
+        console.log('Using id field as userId:', userId);
+      } else if (data.user_id) {
+        userId = data.user_id;
+        console.log('Using user_id field as userId:', userId);
+      } else if (data.userid) {
+        userId = data.userid;
+        console.log('Using userid field as userId:', userId);
+      } else {
+        // Try to get userId from localStorage as a last resort
+        userId = localStorage.getItem(USER_ID_KEY);
+        if (userId) {
+          console.log('Using existing userId from localStorage:', userId);
+        }
+      }
+    }
+
+    if (userId) {
+      localStorage.setItem(USER_ID_KEY, userId.toString());
+      console.log('Stored userId in localStorage:', userId);
     } else {
-      console.warn('No user ID provided to setTokens');
+      console.warn('No user ID provided to setTokens and none found in localStorage');
     }
   }
 
@@ -414,19 +445,24 @@ class AuthService {
   }
 
   /**
-   * Setup axios interceptors for error handling (no token required)
+   * Setup axios interceptors for authentication and error handling
    */
   static setupAxiosInterceptors() {
-    // Request interceptor - no token required
+    // Request interceptor - add token to authenticated requests
     axios.interceptors.request.use(
       (config) => {
-        // No token authorization required
+        // Add authorization header with JWT token if available
+        const token = this.getAccessToken();
+        if (token && !config.headers.Authorization) {
+          config.headers.Authorization = `Bearer ${token}`;
+          console.debug('Added authorization header to request');
+        }
         return config;
       },
       (error) => Promise.reject(error)
     );
 
-    // Response interceptor for error handling
+    // Response interceptor for error handling and token refresh
     axios.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -440,6 +476,38 @@ class AuthService {
             status: error.response?.status,
             statusText: error.response?.statusText
           });
+
+          // Check if the error is due to an expired token (401 Unauthorized)
+          if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            console.debug('Attempting to refresh token due to 401 Unauthorized error');
+
+            // Mark the request as retried to prevent infinite loops
+            originalRequest._retry = true;
+
+            try {
+              // Try to refresh the token
+              const refreshResponse = await this.refreshToken();
+
+              // If token refresh was successful, update the authorization header and retry the request
+              if (refreshResponse && refreshResponse.accessToken) {
+                console.debug('Token refresh successful, retrying original request');
+
+                // Update the authorization header with the new token
+                originalRequest.headers.Authorization = `Bearer ${refreshResponse.accessToken}`;
+
+                // Retry the original request with the new token
+                return axios(originalRequest);
+              } else {
+                console.error('Token refresh failed: No access token in response');
+                this.signOut(); // Clear tokens on refresh failure
+                return Promise.reject(error);
+              }
+            } catch (refreshError) {
+              console.error('Token refresh failed:', refreshError);
+              this.signOut(); // Clear tokens on refresh failure
+              return Promise.reject(error);
+            }
+          }
 
           // For other errors, log more details to help with debugging
           if (error.response) {

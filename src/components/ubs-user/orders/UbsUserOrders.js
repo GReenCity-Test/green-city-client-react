@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import UbsService from '../../../services/ubs/UbsService';
 import UbsUserOrdersList from './UbsUserOrdersList';
+import { getPublicAssetPath } from '../../../constants/imagePaths';
 import './UbsUserOrders.scss';
 
 // Info icon for mobile view
-const infoIcon = '/assets/img/icon/info.svg';
+const infoIcon = getPublicAssetPath('img/icon/info.svg');
 
 /**
  * UBS User Orders component

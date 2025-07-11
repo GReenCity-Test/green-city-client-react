@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import EcoEventsItem from './EcoEventsItem';
 import NewsService from '../../../services/news/NewsService';
 import { useTranslation } from '../../../services/translation/TranslationService';
+import { getMockNews } from '../../../models/news/MockNewsData';
 import './EcoEvents.scss';
 
 const EcoEvents = () => {
   const [latestNews, setLatestNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const eventImg = 'assets/img/main-event-placeholder.png';
-  const arrow = 'assets/img/icon/arrow.png';
+  const eventImg = '/assets/img/main-event-placeholder.png';
+  const arrow = '/assets/img/icon/arrow.svg';
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -36,33 +37,8 @@ const EcoEvents = () => {
         console.warn('EcoEvents: Received empty or invalid news data, using fallback');
         setError('No news available. Using sample content instead.');
 
-        // Use fallback data
-        const mockNews = [
-          {
-            id: 1,
-            title: 'Eco News Title 1',
-            content: 'This is the content of the first eco news item.',
-            imagePath: 'assets/img/main-event-placeholder.png',
-            author: 'John Doe',
-            creationDate: new Date().toISOString()
-          },
-          {
-            id: 2,
-            title: 'Eco News Title 2',
-            content: 'This is the content of the second eco news item.',
-            imagePath: 'assets/img/main-event-placeholder.png',
-            author: 'Jane Smith',
-            creationDate: new Date().toISOString()
-          },
-          {
-            id: 3,
-            title: 'Eco News Title 3',
-            content: 'This is the content of the third eco news item.',
-            imagePath: 'assets/img/main-event-placeholder.png',
-            author: 'Bob Johnson',
-            creationDate: new Date().toISOString()
-          }
-        ];
+        // Use fallback data from our mock news data file
+        const mockNews = getMockNews(3);
         setLatestNews(mockNews);
       }
     } catch (error) {
@@ -70,32 +46,7 @@ const EcoEvents = () => {
       setError('Failed to load news. Please try again later.');
 
       // Fallback to mock data in case of any error
-      const mockNews = [
-        {
-          id: 1,
-          title: 'Eco News Title 1',
-          content: 'This is the content of the first eco news item.',
-          imagePath: 'assets/img/main-event-placeholder.png',
-          author: 'John Doe',
-          creationDate: new Date().toISOString()
-        },
-        {
-          id: 2,
-          title: 'Eco News Title 2',
-          content: 'This is the content of the second eco news item.',
-          imagePath: 'assets/img/main-event-placeholder.png',
-          author: 'Jane Smith',
-          creationDate: new Date().toISOString()
-        },
-        {
-          id: 3,
-          title: 'Eco News Title 3',
-          content: 'This is the content of the third eco news item.',
-          imagePath: 'assets/img/main-event-placeholder.png',
-          author: 'Bob Johnson',
-          creationDate: new Date().toISOString()
-        }
-      ];
+      const mockNews = getMockNews(3);
       setLatestNews(mockNews);
     } finally {
       setLoading(false);

@@ -42,7 +42,37 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const userData = await AuthService.signIn(email, password);
+
+      // Ensure user ID is stored in localStorage
+      if (userData) {
+        if (!userData.userId && userData.id) {
+          // If userId is not in the response but id is, use id as userId
+          localStorage.setItem('userId', userData.id.toString());
+          console.log('Stored user ID from id field:', userData.id);
+        } else if (userData.userId) {
+          // Verify userId is stored correctly
+          console.log('User ID from response:', userData.userId);
+        } else {
+          // If no user ID in response, try to get it from getCurrentUser
+          console.warn('No user ID in sign-in response, attempting to fetch from getCurrentUser');
+          try {
+            const currentUserData = await AuthService.getCurrentUser();
+            if (currentUserData && currentUserData.id) {
+              localStorage.setItem('userId', currentUserData.id.toString());
+              console.log('Stored user ID from getCurrentUser:', currentUserData.id);
+              // Update userData with the id from currentUserData
+              userData.id = currentUserData.id;
+            } else {
+              console.error('Failed to get user ID from getCurrentUser');
+            }
+          } catch (fetchError) {
+            console.error('Error fetching current user after sign-in:', fetchError);
+          }
+        }
+      }
+
       setCurrentUser(userData);
+      AuthService.setTokens(userData); // Ensure tokens are properly set in localStorage
       return userData;
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to sign in. Please check your credentials.');
@@ -79,6 +109,35 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const userData = await GoogleAuthService.signIn(token, language);
+
+      // Ensure user ID is stored in localStorage
+      if (userData) {
+        if (!userData.userId && userData.id) {
+          // If userId is not in the response but id is, use id as userId
+          localStorage.setItem('userId', userData.id.toString());
+          console.log('Google Auth: Stored user ID from id field:', userData.id);
+        } else if (userData.userId) {
+          // Verify userId is stored correctly
+          console.log('Google Auth: User ID from response:', userData.userId);
+        } else {
+          // If no user ID in response, try to get it from getCurrentUser
+          console.warn('Google Auth: No user ID in sign-in response, attempting to fetch from getCurrentUser');
+          try {
+            const currentUserData = await AuthService.getCurrentUser();
+            if (currentUserData && currentUserData.id) {
+              localStorage.setItem('userId', currentUserData.id.toString());
+              console.log('Google Auth: Stored user ID from getCurrentUser:', currentUserData.id);
+              // Update userData with the id from currentUserData
+              userData.id = currentUserData.id;
+            } else {
+              console.error('Google Auth: Failed to get user ID from getCurrentUser');
+            }
+          } catch (fetchError) {
+            console.error('Google Auth: Error fetching current user after sign-in:', fetchError);
+          }
+        }
+      }
+
       setCurrentUser(userData);
       AuthService.setTokens(userData);
       return userData;
@@ -96,6 +155,35 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const userData = await GoogleAuthService.signInWithHeader(token, language);
+
+      // Ensure user ID is stored in localStorage
+      if (userData) {
+        if (!userData.userId && userData.id) {
+          // If userId is not in the response but id is, use id as userId
+          localStorage.setItem('userId', userData.id.toString());
+          console.log('Google Auth Header: Stored user ID from id field:', userData.id);
+        } else if (userData.userId) {
+          // Verify userId is stored correctly
+          console.log('Google Auth Header: User ID from response:', userData.userId);
+        } else {
+          // If no user ID in response, try to get it from getCurrentUser
+          console.warn('Google Auth Header: No user ID in sign-in response, attempting to fetch from getCurrentUser');
+          try {
+            const currentUserData = await AuthService.getCurrentUser();
+            if (currentUserData && currentUserData.id) {
+              localStorage.setItem('userId', currentUserData.id.toString());
+              console.log('Google Auth Header: Stored user ID from getCurrentUser:', currentUserData.id);
+              // Update userData with the id from currentUserData
+              userData.id = currentUserData.id;
+            } else {
+              console.error('Google Auth Header: Failed to get user ID from getCurrentUser');
+            }
+          } catch (fetchError) {
+            console.error('Google Auth Header: Error fetching current user after sign-in:', fetchError);
+          }
+        }
+      }
+
       setCurrentUser(userData);
       AuthService.setTokens(userData);
       return userData;
@@ -113,6 +201,35 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const userData = await GoogleAuthService.signInWithGet(idToken, language);
+
+      // Ensure user ID is stored in localStorage
+      if (userData) {
+        if (!userData.userId && userData.id) {
+          // If userId is not in the response but id is, use id as userId
+          localStorage.setItem('userId', userData.id.toString());
+          console.log('Google Auth GET: Stored user ID from id field:', userData.id);
+        } else if (userData.userId) {
+          // Verify userId is stored correctly
+          console.log('Google Auth GET: User ID from response:', userData.userId);
+        } else {
+          // If no user ID in response, try to get it from getCurrentUser
+          console.warn('Google Auth GET: No user ID in sign-in response, attempting to fetch from getCurrentUser');
+          try {
+            const currentUserData = await AuthService.getCurrentUser();
+            if (currentUserData && currentUserData.id) {
+              localStorage.setItem('userId', currentUserData.id.toString());
+              console.log('Google Auth GET: Stored user ID from getCurrentUser:', currentUserData.id);
+              // Update userData with the id from currentUserData
+              userData.id = currentUserData.id;
+            } else {
+              console.error('Google Auth GET: Failed to get user ID from getCurrentUser');
+            }
+          } catch (fetchError) {
+            console.error('Google Auth GET: Error fetching current user after sign-in:', fetchError);
+          }
+        }
+      }
+
       setCurrentUser(userData);
       AuthService.setTokens(userData);
       return userData;

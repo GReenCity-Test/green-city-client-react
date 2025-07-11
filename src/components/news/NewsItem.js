@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import './NewsItem.scss';
 
 /**
@@ -11,7 +12,7 @@ import './NewsItem.scss';
  * @returns {JSX.Element} - Rendered component
  */
 const NewsItem = ({ news, isGalleryView = true }) => {
-  const defaultImage = 'assets/img/main-event-placeholder.png';
+  const defaultImage = '/assets/img/main-event-placeholder.png';
 
   /**
    * Format a date string to a readable format
@@ -50,8 +51,8 @@ const NewsItem = ({ news, isGalleryView = true }) => {
 
     return (
       <div className="news-tags">
-        {news.tags.map((tag, index) => (
-          <span key={index} className="news-tag">{tag}</span>
+        {news.tags.map((tag) => (
+          <span key={tag} className="news-tag">{tag}</span>
         ))}
       </div>
     );
@@ -63,7 +64,11 @@ const NewsItem = ({ news, isGalleryView = true }) => {
 
   return (
     <div className={`news-item ${isGalleryView ? 'gallery-view' : 'list-view'}`}>
-      <Link to={`/news/${news.id}`} className="news-link">
+      <Link 
+        to={`/news/${news.id}`} 
+        className="news-link"
+        state={{ from: window.location.pathname + window.location.search }}
+      >
         <div className="news-image">
           <img src={news.imagePath || defaultImage} alt={news.title} />
         </div>
@@ -85,6 +90,22 @@ const NewsItem = ({ news, isGalleryView = true }) => {
       </Link>
     </div>
   );
+};
+
+NewsItem.propTypes = {
+  news: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string),
+    shortInfo: PropTypes.string,
+    content: PropTypes.string,
+    imagePath: PropTypes.string,
+    author: PropTypes.shape({
+      name: PropTypes.string
+    }),
+    creationDate: PropTypes.string
+  }).isRequired,
+  isGalleryView: PropTypes.bool
 };
 
 export default NewsItem;

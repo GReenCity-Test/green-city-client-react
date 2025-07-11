@@ -1,23 +1,8 @@
 import axios from 'axios';
-import { MVP_API_URL } from '../../config/api';
 
-// Base API URL from central configuration
-const API_BASE_URL = MVP_API_URL;
-const HABIT_LINK = `${API_BASE_URL}/habit`;
+const HABIT_LINK = `/habit`;
 
-/**
- * Service for habit-related API calls
- */
 class HabitService {
-  /**
-   * Get mutual habits between the current user and a friend
-   *
-   * @param {number} friendId - ID of the friend
-   * @param {number} page - Page number (0-based)
-   * @param {number} size - Page size
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/Habit').HabitList>} Promise that resolves to habit list
-   */
   static async getMutualHabits(friendId, page = 0, size = 10, language = 'en') {
     try {
       const response = await axios.get(`${HABIT_LINK}/allMutualHabits/${friendId}?lang=${language}&page=${page}&size=${size}`);
@@ -28,15 +13,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Get all habits of a friend
-   *
-   * @param {number} friendId - ID of the friend
-   * @param {number} page - Page number (0-based)
-   * @param {number} size - Page size
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/Habit').HabitList>} Promise that resolves to habit list
-   */
   static async getAllFriendHabits(friendId, page = 0, size = 10, language = 'en') {
     try {
       const response = await axios.get(`${HABIT_LINK}/all/${friendId}?lang=${language}&page=${page}&size=${size}`);
@@ -47,14 +23,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Get all available habits
-   *
-   * @param {number} page - Page number (0-based)
-   * @param {number} size - Page size
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/Habit').HabitList>} Promise that resolves to habit list
-   */
   static async getAllHabits(page = 0, size = 10, language = 'en') {
     try {
       const response = await axios.get(`${HABIT_LINK}?lang=${language}&page=${page}&size=${size}`);
@@ -65,31 +33,19 @@ class HabitService {
     }
   }
 
-  /**
-   * Get all habits of the current user
-   *
-   * @param {number} page - Page number (0-based)
-   * @param {number} size - Page size
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/Habit').HabitList>} Promise that resolves to habit list
-   */
-  static async getMyAllHabits(page = 0, size = 10, language = 'en') {
+  static async getMyAllHabits(language = 'en') {
+    if (typeof language !== 'string' || !language.match(/^[a-z]{2}$/i)) {
+      language = 'en';
+    }
     try {
-      const response = await axios.get(`${HABIT_LINK}/my?lang=${language}&page=${page}&size=${size}`);
-      return response.data;
+      const response = await axios.get(`/habit/assign/allForCurrentUser?lang=${language}`);
+      return { page: response.data };
     } catch (error) {
       console.error('Error getting my habits:', error);
       throw error;
     }
   }
 
-  /**
-   * Get a specific habit by ID
-   *
-   * @param {number} id - Habit ID
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/Habit').Habit>} Promise that resolves to habit
-   */
   static async getHabitById(id, language = 'en') {
     try {
       const response = await axios.get(`${HABIT_LINK}/${id}?lang=${language}`);
@@ -100,13 +56,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Get to-do list for a habit
-   *
-   * @param {number} id - Habit ID
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<import('../../models/habit/ToDoList').ToDoList[]>} Promise that resolves to to-do list
-   */
   static async getHabitToDoList(id, language = 'en') {
     try {
       const response = await axios.get(`${HABIT_LINK}/${id}/to-do-list?lang=${language}`);
@@ -117,14 +66,9 @@ class HabitService {
     }
   }
 
-  /**
-   * Get all tags for habits
-   *
-   * @returns {Promise<Array<Object>>} Promise that resolves to tags
-   */
   static async getAllTags() {
     try {
-      const response = await axios.get(`${API_BASE_URL}/tags/v2/search?type=HABIT`);
+      const response = await axios.get(`/tags/v2/search?type=HABIT`);
       return response.data;
     } catch (error) {
       console.error('Error getting tags:', error);
@@ -132,13 +76,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Add a custom habit
-   *
-   * @param {Object} habit - Custom habit data
-   * @param {string} [language='en'] - Language code
-   * @returns {Promise<Object>} Promise that resolves to custom habit
-   */
   static async addCustomHabit(habit, language = 'en') {
     try {
       const formData = this.prepareCustomHabitRequest(habit, language);
@@ -150,14 +87,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Update a custom habit
-   *
-   * @param {Object} habit - Custom habit data
-   * @param {string} [language='en'] - Language code
-   * @param {number} id - Habit ID
-   * @returns {Promise<Object>} Promise that resolves to updated custom habit
-   */
   static async changeCustomHabit(habit, id, language = 'en') {
     try {
       const formData = this.prepareCustomHabitRequest(habit, language);
@@ -169,12 +98,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Delete a custom habit
-   *
-   * @param {number} id - Habit ID
-   * @returns {Promise<Object>} Promise that resolves when deletion is complete
-   */
   static async deleteCustomHabit(id) {
     try {
       const response = await axios.delete(`${HABIT_LINK}/delete/${id}`);
@@ -185,12 +108,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Accept a habit invitation
-   *
-   * @param {number} invitationId - Invitation ID
-   * @returns {Promise<string>} Promise that resolves when acceptance is complete
-   */
   static async acceptHabitInvitation(invitationId) {
     try {
       const response = await axios.patch(`${HABIT_LINK}/invite/${invitationId}/accept`, {});
@@ -201,12 +118,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Decline a habit invitation
-   *
-   * @param {number} invitationId - Invitation ID
-   * @returns {Promise<string>} Promise that resolves when rejection is complete
-   */
   static async declineHabitInvitation(invitationId) {
     try {
       const response = await axios.delete(`${HABIT_LINK}/invite/${invitationId}/reject`);
@@ -217,14 +128,6 @@ class HabitService {
     }
   }
 
-  /**
-   * Prepare custom habit request
-   *
-   * @private
-   * @param {Object} habit - Custom habit data
-   * @param {string} language - Language code
-   * @returns {FormData} Form data for the request
-   */
   static prepareCustomHabitRequest(habit, language) {
     const body = {
       habitTranslations: [

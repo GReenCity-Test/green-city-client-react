@@ -1,5 +1,9 @@
+// Import responsive mixins and variables
+@import '../../../styles/responsive.scss';
+@import '../../../styles/variables.scss';
+
 .eco-event-item {
-  background-color: white;
+  background-color: $primary-white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -15,7 +19,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba($primary-white, 0.9);
     padding: 1rem;
     border-radius: 0;
     box-shadow: none;
@@ -38,18 +42,18 @@
       font-size: 1.2rem;
 
       a {
-        color: #333;
+        color: $secondary-dark-grey;
         text-decoration: none;
         transition: color 0.3s;
 
         &:hover {
-          color: #13aa57;
+          color: $primary-green;
         }
       }
     }
 
     .event-description {
-      color: #666;
+      color: $tertiary-grey;
       margin-bottom: 1rem;
       line-height: 1.5;
       display: -webkit-box;
@@ -61,7 +65,7 @@
     .event-info {
       display: flex;
       justify-content: space-between;
-      color: #888;
+      color: $tertiary-grey;
       font-size: 0.9rem;
 
       .event-author {
